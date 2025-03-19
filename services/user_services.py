@@ -16,7 +16,7 @@ def get_user(db: Session, user_id: int):
     return user
 
 def update_user(db: Session, user_data: UserUpdate):
-    user = User.update_user(db, user_data.id, user_data.username, user_data.password, user_data.expenses)
+    user = User.update_user(db,user_data.username, user_data.password)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user

@@ -10,10 +10,8 @@ class UserCreate(BaseModel):
     password: str
 
 class UserUpdate(BaseModel):
-    id: int
     username: Optional[str] = None
     password: Optional[str] = None
-    expenses: Optional[float] = None
 
 class UserResponse(BaseModel):
     id: int

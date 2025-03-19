@@ -35,7 +35,7 @@ class User(Base):
         return db.query(User).filter(User.id == user_id).first()
 
     @staticmethod
-    def update_user(db: Session, user_id: int, username: Optional[str] = None, password: Optional[str] = None, expenses: Optional[float] = None):
+    def update_user(db: Session, user_id: int, username: Optional[str] = None, password: Optional[str] = None):
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
             return None
@@ -44,8 +44,6 @@ class User(Base):
             user.username = username
         if password:
             user.password = pwd_context.hash(password)
-        if expenses is not None:
-            user.expenses = expenses
 
         db.commit()
         db.refresh(user)
