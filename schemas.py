@@ -8,7 +8,6 @@ class ExpenseCreate(BaseModel):
 class UserCreate(BaseModel):
     username: str
     password: str
-    expenses: Optional[List[ExpenseCreate]] = []
 
 class UserUpdate(BaseModel):
     id: int
@@ -19,7 +18,6 @@ class UserUpdate(BaseModel):
 class UserResponse(BaseModel):
     id: int
     username: str
-    expenses: float
 
     class Config:
         orm_mode = True

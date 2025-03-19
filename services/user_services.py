@@ -4,8 +4,7 @@ from schemas import UserCreate, UserUpdate
 from fastapi import HTTPException
 
 def create_user(db: Session, user_data: UserCreate):
-    expenses = [expense.model_dump() for expense in user_data.expenses] if user_data.expenses else []
-    return User.create_user(db, user_data.username, user_data.password, expenses)
+    return User.create_user(db, user_data)
 
 def get_users(db: Session):
     return User.get_users(db)

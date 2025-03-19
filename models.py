@@ -14,21 +14,13 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username: Mapped[str] = mapped_column(String, unique=True, index=True)
     password: Mapped[str] = mapped_column(String)
-    expenses: Mapped[float] = relationship("Expense", back_populates="user")  # Ensure this line exists
-    
+    expenses: Mapped["Expense"] = relationship("Expense", back_populates="user")
 
     # Data Access Object (DAO) Methods
     @staticmethod
-    def create_user( db: Session, username: str, password: str,  expenses: Optional[List[dict]] = None):
-        hashed_password = pwd_context.hash(password)
-        
-        # Check if expenses exist and are in the correct format
-        db_expenses = []
-        if expenses:
-             db_expenses = [Expense(**expense) for expense in expenses]  # Convert dictionaries to Expense models
-        
-        db_user = User(username=username, password=hashed_password, expenses=db_expenses)
-        
+    def create_user( db: Session, user_credentials):
+        hashed_password = pwd_context.hash(user_credentials.password)
+        db_user = User(username = user_credentials.username ,password = hashed_password)
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
