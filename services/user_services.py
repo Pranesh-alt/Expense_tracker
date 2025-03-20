@@ -7,7 +7,9 @@ def create_user(db: Session, user_data: UserCreate):
     return User.create_user(db, user_data)
 
 def get_users(db: Session):
-    return User.get_users(db)
+    users = User.get_users(db)
+    if not users:
+        raise HTTPException(status_code=404, detail="Users not found")
 
 def get_user(db: Session, user_id: int):
     user = User.get_user(db, user_id)
@@ -15,8 +17,8 @@ def get_user(db: Session, user_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-def update_user(db: Session, user_data: UserUpdate):
-    user = User.update_user(db,user_data.username, user_data.password)
+def update_user(db: Session,user_id: int , user_data: UserUpdate):
+    user = User.update_user(db, user_id,user_data)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user

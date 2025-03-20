@@ -5,6 +5,7 @@ from typing import Optional, List
 import enum
 from database import Base
 from passlib.context import CryptContext
+from schemas import UserResponse
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -35,19 +36,21 @@ class User(Base):
         return db.query(User).filter(User.id == user_id).first()
 
     @staticmethod
-    def update_user(db: Session, user_id: int, username: Optional[str] = None, password: Optional[str] = None):
+    def update_user(db: Session, user_id: int, user_credentials):
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
-            return None
-
-        if username:
-            user.username = username
-        if password:
-            user.password = pwd_context.hash(password)
-
+            return None  
+                
+        if 'username' in user_credentials:
+            user.username = user_credentials['username']
+        if 'password' in user_credentials:
+            user.password = pwd_context.hash(user_credentials['password'])
+            
         db.commit()
         db.refresh(user)
+        
         return user
+
 
     @staticmethod
     def delete_user(db: Session, user_id: int):
