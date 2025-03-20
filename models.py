@@ -71,5 +71,6 @@ class Expense(Base):
     amount: Mapped[float] = mapped_column(Float)
     category: Mapped[str] = mapped_column(String(255))
     transaction: Mapped[TransactionType] = mapped_column(Enum(TransactionType), nullable=False)
+    time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     user: Mapped["User"] = relationship("User", back_populates="expenses")

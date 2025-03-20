@@ -5,6 +5,9 @@ class ExpenseCreate(BaseModel):
     amount: float  # Ensure amount is always a float
     category: str  # Ensure category is a string
 
+class ExpenseResponse:
+    
+
 class UserCreate(BaseModel):
     username: str
     password: str
@@ -16,6 +19,8 @@ class UserUpdate(BaseModel):
 class UserResponse(BaseModel):
     id: int
     username: str
+
+
 
     class Config:
         orm_mode = True
