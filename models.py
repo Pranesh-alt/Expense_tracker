@@ -5,7 +5,6 @@ from typing import Optional, List
 import enum
 from database import Base
 from passlib.context import CryptContext
-from schemas import UserResponse
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -36,7 +35,7 @@ class User(Base):
         return db.query(User).filter(User.id == user_id).first()
 
     @staticmethod
-    def update_user(db: Session, user_id: int, user_credentials):
+    def update_user(db: Session, user_id: int, user_credentials: dict):
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
             return None  
