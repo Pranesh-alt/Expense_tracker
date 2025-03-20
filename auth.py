@@ -1,15 +1,17 @@
+from fastapi import APIRouter, Depends, status, HTTPException, Request
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
-
-
-
-
+from typing import Annotated
+from passlib.context import CryptContext
 
 
 SECRET_KEY = 'ocewmpowmpomv'
 ALGORITHM = 'HS256'
 
+
+bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 
 def create_access_token(username: str, user_id: int,role: str, expires_delta: timedelta):
     encode = {'sub': username, 'id': user_id, 'role': role}
