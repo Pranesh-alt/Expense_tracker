@@ -20,7 +20,7 @@ class User(Base):
     @staticmethod
     def create_user( db: Session, user_credentials):
         hashed_password = pwd_context.hash(user_credentials.password)
-        db_user = User(username = user_credentials.username ,password = hashed_password)
+        db_user = User(id = db.query(User).count() + 1,username = user_credentials.username ,password = hashed_password)
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
