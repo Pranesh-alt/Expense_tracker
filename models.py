@@ -28,7 +28,7 @@ class User(Base):
 
     @staticmethod
     def get_users(db: Session):
-        return db.query(User).all()
+        return db.query(User).all() or []
 
     @staticmethod
     def get_user(db: Session, user_id: int):
@@ -63,8 +63,8 @@ class User(Base):
 
 
 class TransactionType(str, enum.Enum):
-    credit = "credit"
-    debit = "debit"
+    CREDIT = "credit"
+    DEBIT = "debit"
 
 class Expense(Base):
     __tablename__ = "expenses"
@@ -79,8 +79,19 @@ class Expense(Base):
     
     
     @staticmethod
-    def get_users(db: Session):
+    def get_expenses(db: Session):
         return db.query(Expense).all()
+    
+    
+    @staticmethod
+    def create_expense(db: Session, expense_data):
+        expense = Expense(amount = expense_data.amount, category= expense_data.category)
+        db.add(expense_data)
+        db.commit()
+        db.refresh(expense_data)
+        
+        return expense
+        
 
 
 

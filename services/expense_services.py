@@ -1,17 +1,16 @@
 from sqlalchemy.orm import Session
 from models import Expense
+from schemas import ExpenseCreate
 
 # Create Expense
-def create_expense(db: Session, expense_data):
-    expense = Expense(amount=expense_data.amount, category=expense_data.category, user_id=expense_data.user_id)
-    db.add(expense)
-    db.commit()
-    db.refresh(expense)
-    return {"message": "Expense added successfully"}
+def create_expense(db: Session, expense_data: ExpenseCreate):
+    return Expense.create_expense(db,expense_data)
+    
+    
 
 # Get all Expenses
 def get_all_expenses(db: Session):
-    return Expense.get_users(db)
+    return Expense.get_expenses(db)
     
 
 

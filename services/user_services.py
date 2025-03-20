@@ -10,6 +10,7 @@ def get_users(db: Session):
     users = User.get_users(db)
     if not users:
         raise HTTPException(status_code=404, detail="Users not found")
+    return users
 
 def get_user(db: Session, user_id: int):
     user = User.get_user(db, user_id)
@@ -28,3 +29,8 @@ def delete_user(db: Session, user_id: int):
     if not deleted:
         raise HTTPException(status_code=404, detail="User not found")
     return {"message": "User deleted successfully"}
+
+
+
+
+
