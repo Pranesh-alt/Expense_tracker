@@ -11,7 +11,8 @@ def create_expense(db: Session, expense_data):
 
 # Get all Expenses
 def get_all_expenses(db: Session):
-    return db.query(Expense).all()
+    return Expense.get_users(db)
+    
 
 
 

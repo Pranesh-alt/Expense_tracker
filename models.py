@@ -74,3 +74,11 @@ class Expense(Base):
     time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     user: Mapped["User"] = relationship("User", back_populates="expenses")
+    
+    
+    @staticmethod
+    def get_users(db: Session):
+        return db.query(Expense).all()
+
+
+

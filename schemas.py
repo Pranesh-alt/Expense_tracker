@@ -1,11 +1,22 @@
 from pydantic import BaseModel
 from typing import Optional, List
+from datetime import datetime
+from models import TransactionType
 
 class ExpenseCreate(BaseModel):
     amount: float  # Ensure amount is always a float
     category: str  # Ensure category is a string
 
-class ExpenseResponse:
+class ExpenseResponse(BaseModel):
+    id: int
+    amount: float
+    category: str
+    transaction: TransactionType
+    time: datetime
+    user_id: int
+
+    class Config:
+        from_attributes = True  # Enables ORM serialization in FastAPI
     
 
 class UserCreate(BaseModel):
