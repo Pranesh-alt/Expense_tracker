@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
 from schemas import UserCreate, ExpenseCreate, ExpenseResponse
-from services.expense_services import get_all_expenses 
+from services.expense_services import get_all_expenses , create_expense
 
 router = APIRouter()
 
@@ -11,6 +10,8 @@ def get__all__expenses():
     return get_all_expenses()
 
 
-# @router.post("/", response_model=ExpenseCreate, status_code=status.HTTP_201_CREATED)
-# def create_expense()
+@router.post("/", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
+def create__expense(expense: ExpenseCreate):
+    return create_expense(expense)
+    
 

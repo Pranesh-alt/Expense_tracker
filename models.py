@@ -95,13 +95,18 @@ class Expense(Base):
         with SessionLocal() as db:
          try:
              transaction_type = TransactionType(expense_data.transaction)
-         finally: 
-            expense = Expense(id = db.query(Expense).count() + 1,amount = expense_data.amount, category= expense_data.category,transaction = transaction_type)
-            db.add(expense_data)
-            db.commit()
-            db.refresh(expense_data)
         
-         return expense
+         finally: 
+            expense = Expense(id = db.query(Expense).count() + 1,
+                              amount = expense_data.amount,
+                              category= expense_data.category,
+                              transaction = transaction_type,)
+            db.add(expense)
+            db.commit()
+            db.refresh(expense)
+            return expense
+        
+        
         
 
 
