@@ -9,8 +9,8 @@ def create_expense(db: Session, expense_data: ExpenseCreate):
     
 
 # Get all Expenses
-def get_all_expenses(db: Session):
-    return Expense.get_expenses(db)
+def get_all_expenses():
+    return Expense.get_expenses()
     
 
 
