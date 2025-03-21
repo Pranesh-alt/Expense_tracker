@@ -34,4 +34,4 @@ def delete_expense(expense_id: int):
     if not expense:
         raise HTTPException(status_code=404, detail="Expense not found")
 
-    
+    return expense

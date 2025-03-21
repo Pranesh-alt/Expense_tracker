@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Enum
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum
 from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session
 from datetime import datetime
 from typing import Optional, List
@@ -16,6 +16,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username: Mapped[str] = mapped_column(String, unique=True, index=True)
     password: Mapped[str] = mapped_column(String)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     expenses: Mapped["Expense"] = relationship("Expense", back_populates="user")
 
     # Data Access Object (DAO) Methods
@@ -23,7 +24,10 @@ class User(Base):
     def create_user(user_credentials):
         with SessionLocal() as db:
            hashed_password = pwd_context.hash(user_credentials.password)
-           db_user = User(id = db.query(User).count() + 1,username = user_credentials.username ,password = hashed_password)
+           db_user = User(id = db.query(User).count() + 1,
+                          username = user_credentials.username ,
+                          password = hashed_password,
+                          )
            db.add(db_user)
            db.commit()
            db.refresh(db_user)
@@ -148,16 +152,17 @@ class Expense(Base):
         with SessionLocal() as db:
             expense = db.query(Expense).filter(Expense.id == expense_id).first()
             
-            # if not expense:
-            #     return None
+            if not expense:
+                return None
             
             db.delete(expense)
             db.commit()
             
-            return expense
+            return {"message" : "successfully Deleted"}
             
                           
-            
+    # @staticmethod
+    # def get_expense_category()        
 
 
 

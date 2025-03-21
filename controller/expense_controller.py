@@ -24,3 +24,4 @@ def update__expense(expense_id:int,expense_data: ExpenseUpdate):
 @router.delete("/{expense_id}", response_model=ExpenseResponse, status_code=status.HTTP_200_OK)
 def delete__expense(expense_id: int):
     return delete_expense(expense_id)
+
