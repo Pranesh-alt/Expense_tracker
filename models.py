@@ -70,39 +70,28 @@ class User(Base):
 
 
 # Enum for Expense Category
-class ExpenseCategory(str, Enum):
+class ExpenseCategory(str, enum.Enum):
     FOOD = "FOOD"
     TRAVEL = "TRAVEL"
     ENTERTAINMENT = "ENTERTAINMENT"
     SHOPPING = "SHOPPING"
     OTHERS = "OTHERS"
 
-    @classmethod
-    def from_str(cls, value: str):
-        try:
-            return cls(value)
-        except ValueError:
-            raise ValueError(f"Invalid category: {value}.")
+    
 
 # Enum for Transaction Type
-class TransactionType(str, Enum):
+class TransactionType(str, enum.Enum):
     DEBIT = "DEBIT"
     CREDIT = "CREDIT"
 
-    @classmethod
-    def from_str(cls, value: str):
-        try:
-            return cls(value)
-        except ValueError:
-            raise ValueError(f"Invalid transaction type: {value}.")
         
 class Expense(Base):
     __tablename__ = "expenses"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     amount: Mapped[float] = mapped_column(Float)
-    category: Mapped[ExpenseCategory] = mapped_column(Enum(ExpenseCategory), nullable=False)
-    transaction: Mapped[TransactionType] = mapped_column(Enum(TransactionType), nullable=False)
+    category: Mapped[ExpenseCategory] = mapped_column(Enum(ExpenseCategory), default=ExpenseCategory.FOOD, nullable=False)
+    transaction: Mapped[TransactionType] = mapped_column(Enum(TransactionType), default=TransactionType.CREDIT, nullable=False)
     time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     user: Mapped["User"] = relationship("User", back_populates="expenses")
@@ -117,29 +106,24 @@ class Expense(Base):
     @staticmethod
     def create_expense(expense_data):
         with SessionLocal() as db:
-            try:
-                # Validate category and transaction type
-                category_type = ExpenseCategory.from_str(expense_data.category)
-                transaction_type = TransactionType.from_str(expense_data.transaction)
-
-                # Create new expense entry
-                expense = Expense(
-                    id=db.query(Expense).count() + 1,  # Generate ID dynamically
-                    amount=expense_data.amount,
-                    category=category_type.value,  # Store as string
-                    transaction=transaction_type.value,  # Store as string
-                    user_id=expense_data.user_id
-                )
-
-                # Add and commit transaction
-                db.add(expense)
-                db.commit()
-                db.refresh(expense)
-                return expense
-
-            except Exception as e:
-                db.rollback()
-                raise e  # Re-raise exception for FastAPI to handle
+         try:
+            
+        
+             expense = Expense(id = db.query(Expense).count() + 1,
+                              amount = expense_data.amount,
+                              category= expense_data.category,
+                              transaction = expense_data.transaction,
+                              user_id=expense_data.user_id
+                              )
+             db.add(expense)
+             db.commit()
+             db.refresh(expense)
+             return expense
+        
+        
+         except Exception as e:
+             db.rollback()
+             raise e
              
         
 
