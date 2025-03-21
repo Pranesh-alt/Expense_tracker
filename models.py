@@ -126,9 +126,9 @@ class Expense(Base):
              raise e
     
     @staticmethod
-    def update_expense(expense_data:dict):
+    def update_expense(expense_id:int,expense_data:dict):
         with SessionLocal() as db:
-            expense = db.query(Expense).filter(Expense.id == expense_data["expense_id"]).first()
+            expense = db.query(Expense).filter(Expense.id == expense_id).first()
             
             if not expense:
                 return None

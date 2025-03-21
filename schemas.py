@@ -23,7 +23,6 @@ class ExpenseResponse(BaseModel):
         from_attributes = True  # Enables ORM serialization in FastAPI
     
 class ExpenseUpdate(BaseModel):
-    expense_id : int
     amount: Optional[float] = Field(None, gt=0) 
     category: Optional[ExpenseCategory] = None
     transaction: Optional[TransactionType] = None
@@ -41,8 +40,6 @@ class UserUpdate(BaseModel):
 class UserResponse(BaseModel):
     id: int
     username: str
-
-
 
     class Config:
         orm_mode = True
