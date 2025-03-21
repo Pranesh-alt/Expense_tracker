@@ -40,6 +40,7 @@ class UserUpdate(BaseModel):
 class UserResponse(BaseModel):
     id: int
     username: str
+    password: str
 
     class Config:
         orm_mode = True
