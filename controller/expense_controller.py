@@ -16,6 +16,6 @@ def create__expense(expense: ExpenseCreate):
     
 
 
-@router.put("/{expense_id}", status_code=status.HTTP_201_CREATED)
-def update__expense(expense_id: int, expense_data: ExpenseUpdate):
+@router.put("/",response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
+def update__expense(expense_data: ExpenseUpdate):
     return update_expense(expense_data)
