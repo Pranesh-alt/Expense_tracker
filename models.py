@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Enu
 from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session
 from datetime import datetime
 from typing import Optional, List
-import enum
+from  enum import Enum
 from database import Base, SessionLocal
 from passlib.context import CryptContext
 
@@ -71,6 +71,14 @@ class User(Base):
 class TransactionType(str, enum.Enum):
     CREDIT = "credit"
     DEBIT = "debit"
+    
+    @classmethod
+    def from_str(cls, value: str):
+        """Convert a string to a TransactionType enum (case insensitive)"""
+        value = value.lower()
+        if value in cls.__members__:
+            return cls[value.upper()]
+        raise ValueError(f"Invalid transaction type: {value}")
 
 class Expense(Base):
     __tablename__ = "expenses"
@@ -94,19 +102,24 @@ class Expense(Base):
     def create_expense(expense_data):
         with SessionLocal() as db:
          try:
-             transaction_type = TransactionType(expense_data.transaction)
+             transaction_type = TransactionType.from_str(expense_data.transaction)
         
-         finally: 
-            expense = Expense(id = db.query(Expense).count() + 1,
+             expense = Expense(id = db.query(Expense).count() + 1,
                               amount = expense_data.amount,
                               category= expense_data.category,
-                              transaction = transaction_type,)
-            db.add(expense)
-            db.commit()
-            db.refresh(expense)
-            return expense
+                              transaction = transaction_type,
+                              user_id=expense_data.user_id
+                              )
+             db.add(expense)
+             db.commit()
+             db.refresh(expense)
+             return expense
         
         
+         except Exception as e:
+             db.rollback()
+             raise e
+             
         
 
 

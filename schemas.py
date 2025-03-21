@@ -7,6 +7,7 @@ class ExpenseCreate(BaseModel):
     amount: float  # Ensure amount is always a float
     category: str  # Ensure category is a string
     transaction: Optional[str] = None
+    user_id : int
 
 class ExpenseResponse(BaseModel):
     id: int
