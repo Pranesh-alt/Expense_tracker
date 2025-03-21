@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional, List
 from datetime import datetime
 from models import TransactionType
@@ -6,17 +6,19 @@ from models import TransactionType
 class ExpenseCreate(BaseModel):
     amount: float  # Ensure amount is always a float
     category: str  # Ensure category is a string
-    transaction: Optional[str] = None
+    transaction: str
     user_id : int
 
 class ExpenseResponse(BaseModel):
     id: int
     amount: float
     category: str
-    transaction: TransactionType
+    transaction: str
     time: datetime
     user_id: int
-
+    
+   
+    
     class Config:
         from_attributes = True  # Enables ORM serialization in FastAPI
     
