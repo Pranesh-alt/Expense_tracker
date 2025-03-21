@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from models import Expense,ExpenseCategory
+from models import Expense,ExpenseCategory, TransactionType
 from schemas import ExpenseCreate, ExpenseUpdate
 
 # Create Expense
@@ -38,3 +38,6 @@ def delete_expense(expense_id: int):
 
 def expense_categories():
     return {"categories": list(ExpenseCategory)}
+
+def expense_transaction_types():
+    return {"transaction": list(TransactionType)}

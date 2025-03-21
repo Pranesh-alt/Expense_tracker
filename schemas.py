@@ -32,6 +32,8 @@ class ExpenseUpdate(BaseModel):
 class ExpenseCategoryResponse(BaseModel):
     categories: list[ExpenseCategory]
 
+class ExpenseTransactionRespone(BaseModel):
+    transaction: list[TransactionType]
 
 class UserCreate(BaseModel):
     username: str

@@ -80,8 +80,6 @@ class ExpenseCategory(str, enum.Enum):
     SHOPPING = "SHOPPING"
     OTHERS = "OTHERS"
 
-  
-  
 
 # Enum for Transaction Type
 class TransactionType(str, enum.Enum):
