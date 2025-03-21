@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas import UserCreate, ExpenseCreate, ExpenseResponse
-from services.expense_services import get_all_expenses , create_expense
+from schemas import UserCreate, ExpenseCreate, ExpenseResponse, ExpenseUpdate
+from services.expense_services import get_all_expenses , create_expense, update_expense
 
 router = APIRouter()
 
@@ -15,3 +15,7 @@ def create__expense(expense: ExpenseCreate):
     return create_expense(expense)
     
 
+
+@router.put("/{expense_id}", status_code=status.HTTP_201_CREATED)
+def update__expense(expense_id: int, expense_data: ExpenseUpdate):
+    return update_expense(expense_data)

@@ -13,8 +13,8 @@ class ExpenseCreate(BaseModel):
 class ExpenseResponse(BaseModel):
     id: int
     amount: float
-    category: str
-    transaction: str
+    category: ExpenseCategory
+    transaction: TransactionType
     time: datetime
     user_id: int
     
@@ -22,6 +22,12 @@ class ExpenseResponse(BaseModel):
     class Config:
         from_attributes = True  # Enables ORM serialization in FastAPI
     
+class ExpenseUpdate(BaseModel):
+    amount: Optional[float] = None
+    category: Optional[ExpenseCategory] = None
+    transaction: Optional[TransactionType] = None
+
+
 
 class UserCreate(BaseModel):
     username: str

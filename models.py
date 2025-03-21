@@ -124,8 +124,26 @@ class Expense(Base):
          except Exception as e:
              db.rollback()
              raise e
-             
+    
+    @staticmethod
+    def update_expense(expense_id: int, expense_data:dict):
+        with SessionLocal() as db:
+            expense = db.query(Expense).filter(Expense.id == expense_id).first()
+            
+            if not expense:
+                return None
+            
+            if 'amount' in expense_data:
+                expense.amount = expense_data['amount']
+            
+            if 'category' in expense_data:
+                expense.category = expense_data['category']
+            
         
+            
+            
+                  
+            
 
 
 
