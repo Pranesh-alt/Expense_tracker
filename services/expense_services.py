@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from models import Expense
+from models import Expense,ExpenseCategory
 from schemas import ExpenseCreate, ExpenseUpdate
 
 # Create Expense
@@ -35,3 +35,6 @@ def delete_expense(expense_id: int):
         raise HTTPException(status_code=404, detail="Expense not found")
 
     return expense
+
+def expense_categories():
+    return {"categories": list(ExpenseCategory)}

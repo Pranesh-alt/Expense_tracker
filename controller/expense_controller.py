@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas import UserCreate, ExpenseCreate, ExpenseResponse, ExpenseUpdate
-from services.expense_services import get_all_expenses , create_expense, update_expense, delete_expense
+from schemas import UserCreate, ExpenseCreate, ExpenseResponse, ExpenseUpdate,ExpenseCategoryResponse
+from services.expense_services import get_all_expenses , create_expense, update_expense, delete_expense, expense_categories
+from models import ExpenseCategory
 
 router = APIRouter()
 
@@ -25,3 +26,7 @@ def update__expense(expense_id:int,expense_data: ExpenseUpdate):
 def delete__expense(expense_id: int):
     return delete_expense(expense_id)
 
+@router.get("/categories", response_model=ExpenseCategoryResponse, status_code=status.HTTP_200_OK)
+def expenses__categories():
+    return expense_categories()
+    

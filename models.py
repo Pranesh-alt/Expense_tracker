@@ -80,7 +80,8 @@ class ExpenseCategory(str, enum.Enum):
     SHOPPING = "SHOPPING"
     OTHERS = "OTHERS"
 
-    
+  
+  
 
 # Enum for Transaction Type
 class TransactionType(str, enum.Enum):
@@ -161,8 +162,9 @@ class Expense(Base):
             return {"message" : "successfully Deleted"}
             
                           
-    # @staticmethod
-    # def get_expense_category()        
-
-
-
+    @staticmethod
+    def get_expense_category():
+        with SessionLocal() as db:
+            return db.query(Expense.category).all()
+            
+            

@@ -29,6 +29,10 @@ class ExpenseUpdate(BaseModel):
 
 
 
+class ExpenseCategoryResponse(BaseModel):
+    categories: list[ExpenseCategory]
+
+
 class UserCreate(BaseModel):
     username: str
     password: str
