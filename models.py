@@ -66,7 +66,6 @@ class User(Base):
 
          db.delete(user)
          db.commit()
-         return True
 
 
 # Enum for Expense Category
@@ -139,13 +138,25 @@ class Expense(Base):
             if 'category' in expense_data:
                 expense.category = expense_data['category']
             
-        
             db.commit()
             db.refresh(expense)
             
             return expense
             
-                  
+    @staticmethod
+    def delete_expense(expense_id:int):
+        with SessionLocal() as db:
+            expense = db.query(Expense).filter(Expense.id == expense_id).first()
+            
+            # if not expense:
+            #     return None
+            
+            db.delete(expense)
+            db.commit()
+            
+            return expense
+            
+                          
             
 
 

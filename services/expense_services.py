@@ -28,5 +28,10 @@ def update_expense(expense_id:int,expense_data: ExpenseUpdate):
     return expense
 
 
+def delete_expense(expense_id: int):
+    expense = Expense.delete_expense(expense_id)
+    
+    if not expense:
+        raise HTTPException(status_code=404, detail="Expense not found")
 
     
