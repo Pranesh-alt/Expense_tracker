@@ -15,8 +15,8 @@ ALGORITHM = 'HS256'
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 
-def create_access_token(username: str, user_id: int,role: str, expires_delta: timedelta):
-    encode = {'sub': username, 'id': user_id, 'role': role}
+def create_access_token(username: str, user_id: int, expires_delta: timedelta):
+    encode = {'sub': username, 'id': user_id}
     expires = datetime.now(timezone.utc) + expires_delta
     encode.update({'exp': expires})
     return jwt.encode(encode, SECRET_KEY, algorithm = ALGORITHM)
@@ -46,6 +46,6 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     if not user:
         return "Failed Authentication"
     
-    token = create_access_token(user.username, user.user.id, timedelta(minutes=20))
+    token = create_access_token(user.username, user.id, timedelta(minutes=20))
     
-    return  "Successful Authentication" 
+    return  token
