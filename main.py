@@ -1,7 +1,7 @@
 from fastapi import FastAPI 
 from controller import user_controller, expense_controller
 from database import engine, Base
-
+import auth
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
@@ -18,3 +18,4 @@ def read_root():
 # Include controllers
 app.include_router(user_controller.router, prefix="/users", tags=["Users"])
 app.include_router(expense_controller.router, prefix="/expenses", tags=["Expenses"])
+app.include_router(auth.router, prefix="/auth", tags=["auth"])

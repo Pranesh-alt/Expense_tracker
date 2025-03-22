@@ -4,7 +4,9 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from typing import Annotated
 from passlib.context import CryptContext
+from models.user_model import User
 
+router = APIRouter()
 
 SECRET_KEY = 'ocewmpowmpomv'
 ALGORITHM = 'HS256'
@@ -34,3 +36,14 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
     
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate token')
+
+
+@router.post("/token")
+async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,Depends()]):
+    
+    user = User.authenticate_user(form_data.username, form_data.password)
+    
+    if not user:
+        return "Failed Authentication"
+    
+    return  "Successful Authentication"

@@ -71,4 +71,13 @@ class User(Base):
          db.commit()
     
     
-    
+    @staticmethod
+    def authenticate_user(username: str, password: str):
+        with SessionLocal() as db:
+            user = db.query(User).filter(User.username == username).first()
+            
+            if not user:
+                return False
+            if not pwd_context.verify(password,user.password):
+                return False
+            return True
