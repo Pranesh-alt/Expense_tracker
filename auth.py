@@ -5,7 +5,7 @@ from jose import jwt, JWTError
 from typing import Annotated
 from passlib.context import CryptContext
 from models.user_model import User
-
+from schemas.user_schemas import Token
 router = APIRouter()
 
 SECRET_KEY = 'ocewmpowmpomv'
@@ -38,7 +38,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate token')
 
 
-@router.post("/token")
+@router.post("/token", response_model=Token)
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,Depends()]):
     
     user = User.authenticate_user(form_data.username, form_data.password)
@@ -48,4 +48,4 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     
     token = create_access_token(user.username, user.id, timedelta(minutes=20))
     
-    return  token
+    return  {'access_token':token, 'token_type':'bearer'}
