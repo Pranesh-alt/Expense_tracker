@@ -1,6 +1,6 @@
 from fastapi import HTTPException
-from models import Expense,ExpenseCategory, TransactionType
-from schemas import ExpenseCreate, ExpenseUpdate
+from models.expense_model import Expense,ExpenseCategory, TransactionType
+from schemas.expense_schemas import ExpenseCreate, ExpenseUpdate
 
 # Create Expense
 def create_expense(expense_data: ExpenseCreate):
@@ -41,3 +41,13 @@ def expense_categories():
 
 def expense_transaction_types():
     return {"transaction": list(TransactionType)}
+
+
+
+def get_monthly_reports(user_id,month,year):
+    report = Expense.get_monthly_reports(user_id,month,year)
+    
+    if report is None:
+        raise HTTPException(status_code=404, detail="Report not found")
+    
+    return report

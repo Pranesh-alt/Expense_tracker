@@ -6,7 +6,7 @@ import enum
 from sqlalchemy import Enum
 from database import Base, SessionLocal
 from passlib.context import CryptContext
-from expense_model import Expense
+from models.expense_model import Expense
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -17,7 +17,6 @@ class User(Base):
     username: Mapped[str] = mapped_column(String, unique=True, index=True)
     password: Mapped[str] = mapped_column(String)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    expenses: Mapped["Expense"] = relationship("Expense", back_populates="user")
 
     # Data Access Object (DAO) Methods
     @staticmethod

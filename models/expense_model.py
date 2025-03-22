@@ -5,8 +5,7 @@ from typing import Optional, List
 from sqlalchemy import Enum
 from database import Base, SessionLocal
 from passlib.context import CryptContext
-from user_model import User
-from enums.expense_enums import ExpenseCategory,TransactionType
+from enums.expense_enums import ExpenseCategory,TransactionType,Months
 
 
         
@@ -19,7 +18,6 @@ class Expense(Base):
     transaction: Mapped[TransactionType] = mapped_column(Enum(TransactionType), default=TransactionType.CREDIT, nullable=False)
     time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    user: Mapped["User"] = relationship("User", back_populates="expenses")
     
     
     @staticmethod
@@ -88,4 +86,25 @@ class Expense(Base):
         with SessionLocal() as db:
             return db.query(Expense.category).all()
             
-            
+    
+    
+    @staticmethod
+    def get_monthly_reports(user_id, month, year):
+        with SessionLocal() as db:
+           start_date = datetime(year, month, 1)
+           if month == 12:
+            end_date = datetime(year + 1, 1, 1)
+           else:
+            end_date = datetime(year, month + 1, 1)
+
+           report = db.query(Expense).filter(
+            Expense.user_id == user_id,
+            Expense.time >= start_date,
+            Expense.time < end_date
+             ).all()
+
+           return report        
+       
+       
+       
+       
