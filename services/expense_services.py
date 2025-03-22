@@ -43,7 +43,6 @@ def expense_transaction_types():
     return {"transaction": list(TransactionType)}
 
 
-
 def get_monthly_reports(user_id,month,year):
     report = Expense.get_monthly_reports(user_id,month,year)
     

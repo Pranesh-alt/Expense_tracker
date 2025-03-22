@@ -16,17 +16,3 @@ class TransactionType(str, enum.Enum):
     DEBIT = "DEBIT"
     CREDIT = "CREDIT"
 
-
-class Months:
-    JANUARY = "JANUARY"
-    FEBRAUARY = "FEBRAUARY"
-    MARCH = "MARCH"
-    APRIL = "APRIL"
-    MAY = "MAY"
-    JUNE = "JUNE"
-    JULY = "JULY"
-    AUGUST = "AUGUST"
-    SEPTEMBER = "SEPTEMBER"
-    OCTOBER = "OCTOBER"
-    NOVEMBER = "NOVEMBER"
-    DECEMBER = "DECEMBER"
