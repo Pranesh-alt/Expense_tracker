@@ -3,9 +3,9 @@
 ## Project Overview
 This Expense Tracker project helps users manage and track their expenses efficiently using Python.
 
-DATABASE Structure 
+## DATABASE Structure 
 
-## Database Schema
+
 ### User Table
 | Column Name    | Data Type        | Constraints                 | Description              |
 |---------------|-----------------|----------------------------|--------------------------|
