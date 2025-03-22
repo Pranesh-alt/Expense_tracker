@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Request
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from typing import Annotated
@@ -17,7 +17,7 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 
 def create_access_token(username: str, user_id: int,role: str, expires_delta: timedelta):
     encode = {'sub': username, 'id': user_id, 'role': role}
-    expires = datetime.now() + expires_delta
+    expires = datetime.now(timezone.utc) + expires_delta
     encode.update({'exp': expires})
     return jwt.encode(encode, SECRET_KEY, algorithm = ALGORITHM)
         
@@ -46,4 +46,6 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     if not user:
         return "Failed Authentication"
     
-    return  "Successful Authentication"
+    token = create_access_token(user.username, user.user.id, timedelta(minutes=20))
+    
+    return  "Successful Authentication" 
