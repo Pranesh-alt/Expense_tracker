@@ -2,7 +2,8 @@ from fastapi import APIRouter, status
 from services.user_services import update_user, get_user, get_users, delete_user, create_user
 from schemas.user_schemas import UserCreate, UserUpdate, UserResponse
 
-router = APIRouter(prefix="/users", tags=["Users"])
+
+router = APIRouter()
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create__user(user: UserCreate):

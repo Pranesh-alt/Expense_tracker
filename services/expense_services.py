@@ -1,17 +1,16 @@
 from fastapi import HTTPException
-from models.expense_model import Expense,ExpenseCategory, TransactionType
+from models.expense_model import Expense,ExpenseCategory, TransactionType, user_dependency
 from schemas.expense_schemas import ExpenseCreate, ExpenseUpdate
 
 # Create Expense
-def create_expense(expense_data: ExpenseCreate):
-    expense = Expense.create_expense(expense_data)
+def create_expense(user: user_dependency,expense_data: ExpenseCreate):
+    expense = Expense.create_expense(user,expense_data)
     
     if not expense:
         raise HTTPException(status_code=404, detail="Expense not found")
     
     return expense
-    
-    
+       
     
 # Get all Expenses
 def get_all_expenses():

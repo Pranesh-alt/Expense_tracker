@@ -1,13 +1,16 @@
+from fastapi import Depends, HTTPException
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum
 from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Annotated
 from sqlalchemy import Enum
 from database import Base, SessionLocal
 from passlib.context import CryptContext
 from enums.expense_enums import ExpenseCategory,TransactionType
+from auth import get_current_user
 
 
+user_dependency = Annotated[dict, Depends(get_current_user)]
         
 class Expense(Base):
     __tablename__ = "expenses"
@@ -20,6 +23,9 @@ class Expense(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     
     
+    # Use a string reference instead of direct import
+    user = relationship("User", back_populates="expenses")
+    
     @staticmethod
     def get_expenses():
         with SessionLocal() as db:
@@ -27,16 +33,21 @@ class Expense(Base):
     
     
     @staticmethod
-    def create_expense(expense_data):
+    def create_expense(user: user_dependency,expense_data):
         with SessionLocal() as db:
          try:
-            
+             if user is None:
+                 raise HTTPException(status_code=401, detail='authentication failed')
         
-             expense = Expense(id = db.query(Expense).count() + 1,
+        
+             last_expense = db.query(Expense).order_by(Expense.id.desc()).first()
+             new_id = last_expense.id + 1 if last_expense else 1 
+ 
+             expense = Expense(id = new_id,
                               amount = expense_data.amount,
                               category= expense_data.category,
                               transaction = expense_data.transaction,
-                              user_id=expense_data.user_id
+                              user_id=user.get('id')
                               )
              db.add(expense)
              db.commit()
