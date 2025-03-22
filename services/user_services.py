@@ -1,6 +1,5 @@
-from sqlalchemy.orm import Session
-from models import User
-from schemas import UserCreate, UserUpdate
+from models.user_model import User
+from schemas.user_schemas import UserCreate, UserUpdate
 from fastapi import HTTPException
 
 
@@ -32,6 +31,6 @@ def delete_user(user_id: int):
     return {"message": "User deleted successfully"}
 
 
-    
+
 
 
