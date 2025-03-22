@@ -23,3 +23,6 @@ def update__user(user_id:int,user_data: UserUpdate):
 @router.delete("/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK)
 def delete__user(user_id: int):
     return delete_user(user_id)
+
+
+

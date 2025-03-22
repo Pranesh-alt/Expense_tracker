@@ -16,6 +16,7 @@ class UserResponse(BaseModel):
     id: int
     username: str
     password: str
+    is_active: bool
 
     class Config:
         orm_mode = True
