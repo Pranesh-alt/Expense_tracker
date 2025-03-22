@@ -5,7 +5,7 @@ from typing import Optional, List
 from sqlalchemy import Enum
 from database import Base, SessionLocal
 from passlib.context import CryptContext
-from enums.expense_enums import ExpenseCategory,TransactionType,Months
+from enums.expense_enums import ExpenseCategory,TransactionType
 
 
         
@@ -107,4 +107,17 @@ class Expense(Base):
        
        
        
-       
+    @staticmethod
+    def get_yearly_reports(user_id, year):
+        with SessionLocal() as db:
+          start_date = datetime(year, 1, 1) 
+          end_date = datetime(year + 1, 1, 1)  
+
+          report = (
+            db.query(Expense)
+            .filter(Expense.user_id == user_id)
+            .filter(Expense.time >= start_date, Expense.time < end_date)
+            .all()
+        )
+
+        return report   

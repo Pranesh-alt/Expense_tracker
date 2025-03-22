@@ -50,3 +50,11 @@ def get_monthly_reports(user_id,month,year):
         raise HTTPException(status_code=404, detail="Report not found")
     
     return report
+
+def get_yearly_reports(user_id,year):
+    report = Expense.get_yearly_reports(user_id,year)
+    
+    if report is None:
+        raise HTTPException(status_code=404, detail="Report not found")
+    
+    return report

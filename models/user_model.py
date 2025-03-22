@@ -69,3 +69,6 @@ class User(Base):
 
          db.delete(user)
          db.commit()
+    
+    
+    
