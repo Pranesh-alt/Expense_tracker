@@ -2,25 +2,12 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Bool
 from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session
 from datetime import datetime
 from typing import Optional, List
-import enum
 from sqlalchemy import Enum
 from database import Base, SessionLocal
 from passlib.context import CryptContext
 from user_model import User
+from enums.expense_enums import ExpenseCategory,TransactionType
 
-# Enum for Expense Category
-class ExpenseCategory(str, enum.Enum):
-    FOOD = "FOOD"
-    TRAVEL = "TRAVEL"
-    ENTERTAINMENT = "ENTERTAINMENT"
-    SHOPPING = "SHOPPING"
-    OTHERS = "OTHERS"
-
-
-# Enum for Transaction Type
-class TransactionType(str, enum.Enum):
-    DEBIT = "DEBIT"
-    CREDIT = "CREDIT"
 
         
 class Expense(Base):
