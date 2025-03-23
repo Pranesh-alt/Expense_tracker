@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas.expense_schemas import ExpenseCreate, ExpenseResponse, ExpenseUpdate,ExpenseCategoryResponse,ExpenseTransactionRespone
+from schemas.expense_schemas import ExpenseCreate, ExpenseResponse, ExpenseUpdate,ExpenseCategoryResponse,ExpenseTransactionRespone,ExpenseReport
 from services import expense_services
 from models.expense_model import user_dependency
+from typing import List
 router = APIRouter()
 
 
@@ -26,22 +27,24 @@ def update__expense(user: user_dependency,expense_id:int,expense_data: ExpenseUp
 
 
 @router.delete("/{expense_id}", response_model=ExpenseResponse, status_code=status.HTTP_200_OK)
-def delete__expense(expense_id: int):
-    return expense_services.delete_expense(expense_id)
+def delete__expense(user:user_dependency,expense_id: int):
+    return expense_services.delete_expense(user,expense_id)
 
 @router.get("/categories", response_model=ExpenseCategoryResponse, status_code=status.HTTP_200_OK)
-def expenses__categories():
-    return expense_services.expense_categories()
+def expenses__categories(user:user_dependency):
+    return expense_services.expense_categories(user)
     
 @router.get("/transaction", response_model=ExpenseTransactionRespone, status_code=status.HTTP_200_OK)
-def expenses_transaction_types():
-    return expense_services.expense_transaction_types()    
+def expenses_transaction_types(user:user_dependency):
+    return expense_services.expense_transaction_types(user)    
 
-@router.get("/monthlyreport/{year}/{month}",response_model=ExpenseResponse, status_code=status.HTTP_200_OK)
-def get_monthly__reports(user_id,month,year):
-    return expense_services.get_monthly_reports(user_id,month,year)
+@router.get("/monthlyreport/{year}/{month}",response_model=List[ExpenseReport], status_code=status.HTTP_200_OK)
+def get_monthly__reports(user:user_dependency,user_id,month,year):
+    return expense_services.get_monthly_reports(user,user_id,month,year)
 
 
-@router.get("/monthlyreport/{year}",response_model=ExpenseResponse, status_code=status.HTTP_200_OK)
-def get_yearly__reports(user_id,year):
-    return expense_services.get_yearly_reports(user_id,year)
+@router.get("/monthlyreport/{year}",response_model=List[ExpenseReport], status_code=status.HTTP_200_OK)
+def get_yearly__reports(user:user_dependency,year:int):
+    expense = expense_services.get_yearly_reports(user,year)
+    
+    return expense

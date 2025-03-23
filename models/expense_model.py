@@ -75,6 +75,10 @@ class Expense(Base):
     @staticmethod
     def update_expense(user: user_dependency,expense_id:int,expense_data:dict):
         with SessionLocal() as db:
+            
+            if user is None:
+                 raise HTTPException(status_code=401, detail='authentication failed')
+        
             expense = db.query(Expense).filter(Expense.id == expense_id).filter(Expense.user_id == user.get('id')).first()
             
             if not expense:
@@ -92,8 +96,12 @@ class Expense(Base):
             return expense
             
     @staticmethod
-    def delete_expense(expense_id:int):
+    def delete_expense(user: user_dependency,expense_id:int):
         with SessionLocal() as db:
+            
+            if user is None:
+                 raise HTTPException(status_code=401, detail='authentication failed')
+        
             expense = db.query(Expense).filter(Expense.id == expense_id).first()
             
             if not expense:
@@ -106,15 +114,22 @@ class Expense(Base):
             
                           
     @staticmethod
-    def get_expense_category():
+    def get_expense_category(user: user_dependency):
         with SessionLocal() as db:
+            if user is None:
+                 raise HTTPException(status_code=401, detail='authentication failed')
+        
             return db.query(Expense.category).all()
             
     
     
     @staticmethod
-    def get_monthly_reports(user_id, month, year):
+    def get_monthly_reports(user: user_dependency,user_id, month, year):
         with SessionLocal() as db:
+           if user is None:
+                 raise HTTPException(status_code=401, detail='authentication failed')
+        
+            
            start_date = datetime(year, month, 1)
            if month == 12:
             end_date = datetime(year + 1, 1, 1)
@@ -132,16 +147,19 @@ class Expense(Base):
        
        
     @staticmethod
-    def get_yearly_reports(user_id, year):
+    def get_yearly_reports(user: user_dependency, year: int):
         with SessionLocal() as db:
+          if user is None:
+                 raise HTTPException(status_code=401, detail='authentication failed')
+          
+            
           start_date = datetime(year, 1, 1) 
           end_date = datetime(year + 1, 1, 1)  
 
           report = (
             db.query(Expense)
-            .filter(Expense.user_id == user_id)
-            .filter(Expense.time >= start_date, Expense.time < end_date)
+            .filter(Expense.time >= start_date, Expense.time < end_date).filter(Expense.user_id == user.get('id'))
             .all()
         )
 
-        return report   
+        return  report  

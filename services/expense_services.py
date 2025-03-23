@@ -36,31 +36,31 @@ def update_expense(user: user_dependency,expense_id:int,expense_data: ExpenseUpd
     return expense
 
 
-def delete_expense(expense_id: int):
-    expense = Expense.delete_expense(expense_id)
+def delete_expense(user:user_dependency,expense_id: int):
+    expense = Expense.delete_expense(user,expense_id)
     
     if not expense:
         raise HTTPException(status_code=404, detail="Expense not found")
 
     return expense
 
-def expense_categories():
+def expense_categories(user:user_dependency):
     return {"categories": list(ExpenseCategory)}
 
-def expense_transaction_types():
+def expense_transaction_types(user:user_dependency):
     return {"transaction": list(TransactionType)}
 
 
-def get_monthly_reports(user_id,month,year):
-    report = Expense.get_monthly_reports(user_id,month,year)
+def get_monthly_reports(user:user_dependency,user_id,month,year):
+    report = Expense.get_monthly_reports(user,user_id,month,year)
     
     if report is None:
         raise HTTPException(status_code=404, detail="Report not found")
     
     return report
 
-def get_yearly_reports(user_id,year):
-    report = Expense.get_yearly_reports(user_id,year)
+def get_yearly_reports(user:user_dependency,year: int):
+    report = Expense.get_yearly_reports(user,year)
     
     if report is None:
         raise HTTPException(status_code=404, detail="Report not found")
