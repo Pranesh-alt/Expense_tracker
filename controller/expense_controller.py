@@ -10,6 +10,11 @@ def get__all__expenses(user:user_dependency):
     return expense_services.get_all_expenses(user)
 
 
+@router.get("/{expense_id}",response_model=ExpenseResponse, status_code=status.HTTP_200_OK)
+def get__expense__by__id(user: user_dependency,expense_id:int):
+    return expense_services.get_expense_by_id(user,expense_id)
+
+
 @router.post("/", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
 def create__expense(user:user_dependency, expense: ExpenseCreate):
     return expense_services.create_expense(user,expense)

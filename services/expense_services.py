@@ -18,6 +18,15 @@ def get_all_expenses(user:user_dependency):
     
     return expenses if expenses else []  
     
+def get_expense_by_id(user: user_dependency,expense_id: int):
+    expense = Expense.get_expense_by_id(user,expense_id)
+    
+    if not expense:
+        raise HTTPException(status_code=404, detail="Expense not found")
+    
+    return expense
+    
+        
 def update_expense(expense_id:int,expense_data: ExpenseUpdate):
     expense = Expense.update_expense(expense_id,expense_data.model_dump())
     

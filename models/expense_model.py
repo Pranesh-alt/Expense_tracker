@@ -29,8 +29,21 @@ class Expense(Base):
     @staticmethod
     def get_expenses(user:user_dependency):
         with SessionLocal() as db:
-          return db.query(Expense).filter(Expense.user_id == user.get('id')).all()
+            if user is None:
+                 raise HTTPException(status_code=401, detail='authentication failed')
+        
+            return db.query(Expense).filter(Expense.user_id == user.get('id')).all()
     
+    
+    @staticmethod
+    def get_expense_by_id(user: user_dependency,expense_id: int):
+        with SessionLocal() as db:
+            if user is None:
+                 raise HTTPException(status_code=401, detail='authentication failed')
+             
+            expense = db.query(Expense).filter(Expense.id == expense_id).first()
+            
+            return expense
     
     @staticmethod
     def create_expense(user: user_dependency,expense_data):
@@ -60,9 +73,9 @@ class Expense(Base):
              raise e
     
     @staticmethod
-    def update_expense(expense_id:int,expense_data:dict):
+    def update_expense(user: user_dependency,expense_id:int,expense_data:dict):
         with SessionLocal() as db:
-            expense = db.query(Expense).filter(Expense.id == expense_id).first()
+            expense = db.query(Expense).filter(Expense.id == expense_id).filter(Expense.user_id == user.get('id')).first()
             
             if not expense:
                 return None
