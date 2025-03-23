@@ -13,8 +13,8 @@ def create_expense(user: user_dependency,expense_data: ExpenseCreate):
        
     
 # Get all Expenses
-def get_all_expenses():
-    expenses = Expense.get_expenses()
+def get_all_expenses(user:user_dependency):
+    expenses = Expense.get_expenses(user)
     
     return expenses if expenses else []  
     

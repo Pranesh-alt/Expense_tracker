@@ -27,9 +27,9 @@ class Expense(Base):
     user = relationship("User", back_populates="expenses")
     
     @staticmethod
-    def get_expenses():
+    def get_expenses(user:user_dependency):
         with SessionLocal() as db:
-          return db.query(Expense).all()
+          return db.query(Expense).filter(Expense.user_id == user.get('id')).all()
     
     
     @staticmethod

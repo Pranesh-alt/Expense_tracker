@@ -6,8 +6,8 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[ExpenseResponse], status_code=status.HTTP_200_OK)
-def get__all__expenses():
-    return expense_services.get_all_expenses()
+def get__all__expenses(user:user_dependency):
+    return expense_services.get_all_expenses(user)
 
 
 @router.post("/", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
