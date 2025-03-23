@@ -124,7 +124,7 @@ class Expense(Base):
     
     
     @staticmethod
-    def get_monthly_reports(user: user_dependency,user_id, month, year):
+    def get_monthly_reports(user: user_dependency, month, year):
         with SessionLocal() as db:
            if user is None:
                  raise HTTPException(status_code=401, detail='authentication failed')
@@ -137,10 +137,9 @@ class Expense(Base):
             end_date = datetime(year, month + 1, 1)
 
            report = db.query(Expense).filter(
-            Expense.user_id == user_id,
             Expense.time >= start_date,
             Expense.time < end_date
-             ).all()
+             ).filter(Expense.user_id == user.get('id')).all()
 
            return report        
        

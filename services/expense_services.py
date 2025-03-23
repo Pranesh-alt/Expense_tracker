@@ -51,8 +51,8 @@ def expense_transaction_types(user:user_dependency):
     return {"transaction": list(TransactionType)}
 
 
-def get_monthly_reports(user:user_dependency,user_id,month,year):
-    report = Expense.get_monthly_reports(user,user_id,month,year)
+def get_monthly_reports(user:user_dependency,month,year):
+    report = Expense.get_monthly_reports(user,month,year)
     
     if report is None:
         raise HTTPException(status_code=404, detail="Report not found")

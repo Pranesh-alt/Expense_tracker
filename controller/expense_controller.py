@@ -39,12 +39,14 @@ def expenses_transaction_types(user:user_dependency):
     return expense_services.expense_transaction_types(user)    
 
 @router.get("/monthlyreport/{year}/{month}",response_model=List[ExpenseReport], status_code=status.HTTP_200_OK)
-def get_monthly__reports(user:user_dependency,user_id,month,year):
-    return expense_services.get_monthly_reports(user,user_id,month,year)
+def get_monthly__reports(user:user_dependency,month: int,year: int):
+    
+    return expense_services.get_monthly_reports(user,month,year)
 
 
 @router.get("/monthlyreport/{year}",response_model=List[ExpenseReport], status_code=status.HTTP_200_OK)
 def get_yearly__reports(user:user_dependency,year:int):
     expense = expense_services.get_yearly_reports(user,year)
+
     
     return expense
