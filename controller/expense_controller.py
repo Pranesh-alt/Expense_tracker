@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from schemas.expense_schemas import ExpenseCreate, ExpenseResponse, ExpenseUpdate,ExpenseCategoryResponse,ExpenseTransactionRespone,ExpenseReport
 from services import expense_services
-from models.expense_model import user_dependency
+from models.expense_model import user_dependency,Expense
 from typing import List
 router = APIRouter()
 
@@ -47,6 +47,10 @@ def get_monthly__reports(user:user_dependency,month: int,year: int):
 @router.get("/monthlyreport/{year}",response_model=List[ExpenseReport], status_code=status.HTTP_200_OK)
 def get_yearly__reports(user:user_dependency,year:int):
     expense = expense_services.get_yearly_reports(user,year)
+    return expense
 
-    
+
+@router.get("/categories/{category}", response_model=List[ExpenseResponse], status_code=status.HTTP_200_OK)
+def get__expenses_by_category(user: user_dependency,category: str):
+    expense = expense_services.get_expenses_by_category(user,category)
     return expense

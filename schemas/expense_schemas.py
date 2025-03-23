@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator, Field, ValidationInfo
+from pydantic import BaseModel, field_validator, Field, ValidationInfo, ConfigDict
 from typing import Optional, List
 from datetime import datetime
 from models.expense_model import TransactionType, ExpenseCategory
@@ -22,7 +22,7 @@ class ExpenseResponse(BaseModel):
     
     
     class Config:
-        from_attributes = True  # Enables ORM serialization in FastAPI
+        model_config = ConfigDict(from_attributes=True)
     
 class ExpenseUpdate(BaseModel):
     amount: Optional[float] = Field(None, gt=0) 

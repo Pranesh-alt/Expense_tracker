@@ -164,6 +164,9 @@ class Expense(Base):
 
         return  report  
     
-    # @staticmethod
-    # def get_user_by_category(category: str):
+    @staticmethod
+    def get_expenses_by_category(user: user_dependency,category: str):
+        with SessionLocal() as db:
+            expenses = db.query(Expense).filter(Expense.category == category).all()
+        return expenses if expenses else []
      

@@ -66,3 +66,8 @@ def get_yearly_reports(user:user_dependency,year: int):
         raise HTTPException(status_code=404, detail="Report not found")
     
     return report
+
+def get_expenses_by_category(user: user_dependency,category):
+    expenses = Expense.get_expenses_by_category(user,category)
+    
+    return expenses

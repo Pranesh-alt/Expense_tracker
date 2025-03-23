@@ -30,8 +30,7 @@ def delete_user(user_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     return {"message": "User deleted successfully"}
 
-def get_user_by_category(category):
-    users = U
+
 
 
 
