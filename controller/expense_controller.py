@@ -21,8 +21,8 @@ def create__expense(user:user_dependency, expense: ExpenseCreate):
     
 
 @router.put("/{expense_id}",response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
-def update__expense(expense_id:int,expense_data: ExpenseUpdate):
-    return expense_services.update_expense(expense_id,expense_data)
+def update__expense(user: user_dependency,expense_id:int,expense_data: ExpenseUpdate):
+    return expense_services.update_expense(user,expense_id,expense_data)
 
 
 @router.delete("/{expense_id}", response_model=ExpenseResponse, status_code=status.HTTP_200_OK)
