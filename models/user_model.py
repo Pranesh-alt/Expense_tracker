@@ -1,11 +1,13 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum
-from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session
+from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session, joinedload
 from datetime import datetime
 from typing import Optional, List
 import enum
 from sqlalchemy import Enum
 from database import Base, SessionLocal
 from passlib.context import CryptContext
+
+
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -86,4 +88,6 @@ class User(Base):
             if not pwd_context.verify(password,user.password):
                 return False
             return user
+    
+    
     

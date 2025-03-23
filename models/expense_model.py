@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum
-from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session
+from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session, joinedload
 from datetime import datetime
 from typing import Optional, List, Annotated
 from sqlalchemy import Enum
@@ -8,6 +8,7 @@ from database import Base, SessionLocal
 from passlib.context import CryptContext
 from enums.expense_enums import ExpenseCategory,TransactionType
 from auth import get_current_user
+
 
 
 user_dependency = Annotated[dict, Depends(get_current_user)]
@@ -162,3 +163,7 @@ class Expense(Base):
         )
 
         return  report  
+    
+    # @staticmethod
+    # def get_user_by_category(category: str):
+     
