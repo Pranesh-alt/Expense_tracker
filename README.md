@@ -20,7 +20,7 @@ This Expense Tracker project helps users manage and track their expenses efficie
 |-------------|-----------------|------------------------------|---------------------------|
 | expense_id  | INT             | PRIMARY KEY, AUTO_INCREMENT | Unique expense ID        |
 | user_id     | INT             | FOREIGN KEY REFERENCES user(user_id) | User who made the expense |
-| amount      | DECIMAL(10,2)   | NOT NULL                     | Expense amount           |
+| amount      | FLOAT   | NOT NULL                     | Expense amount           |
 | category    | VARCHAR(50)     | NOT NULL                     | Expense category         |
 | description | TEXT            | NULLABLE                     | Details of the expense   |
 | time        | DATE_TIME       | NOT NULL                     | Datetime of the expense  |
