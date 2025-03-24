@@ -30,17 +30,13 @@ class Expense(Base):
     @staticmethod
     def get_expenses(user:user_dependency):
         with SessionLocal() as db:
-            if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
-        
+            
             return db.query(Expense).filter(Expense.user_id == user.get('id')).all()
     
     
     @staticmethod
     def get_expense_by_id(user: user_dependency,expense_id: int):
         with SessionLocal() as db:
-            if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
              
             expense = db.query(Expense).filter(Expense.id == expense_id).first()
             
@@ -50,9 +46,6 @@ class Expense(Base):
     def create_expense(user: user_dependency,expense_data):
         with SessionLocal() as db:
          try:
-             if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
-        
         
              last_expense = db.query(Expense).order_by(Expense.id.desc()).first()
              new_id = last_expense.id + 1 if last_expense else 1 
@@ -76,10 +69,6 @@ class Expense(Base):
     @staticmethod
     def update_expense(user: user_dependency,expense_id:int,expense_data:dict):
         with SessionLocal() as db:
-            
-            if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
-        
             expense = db.query(Expense).filter(Expense.id == expense_id).filter(Expense.user_id == user.get('id')).first()
             
             if not expense:
@@ -99,9 +88,6 @@ class Expense(Base):
     @staticmethod
     def delete_expense(user: user_dependency,expense_id:int):
         with SessionLocal() as db:
-            
-            if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
         
             expense = db.query(Expense).filter(Expense.id == expense_id).first()
             
@@ -117,9 +103,7 @@ class Expense(Base):
     @staticmethod
     def get_expense_category(user: user_dependency):
         with SessionLocal() as db:
-            if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
-        
+
             return db.query(Expense.category).all()
             
     
@@ -127,9 +111,6 @@ class Expense(Base):
     @staticmethod
     def get_monthly_reports(user: user_dependency, month, year):
         with SessionLocal() as db:
-           if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
-            
            start_date = datetime(year, month, 1)
            if month == 12:
             end_date = datetime(year + 1, 1, 1)
@@ -145,9 +126,7 @@ class Expense(Base):
     
     @staticmethod
     def get_daily_reports(user: user_dependency,day, month, year):
-        if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
-            
+                   
         start_date = datetime(year, month, day)
         end_date = start_date + timedelta(days=1)  # Avoids manual date calculations
         with SessionLocal() as db:
@@ -160,15 +139,9 @@ class Expense(Base):
 
            return  report or []        
        
-    
-       
-       
     @staticmethod
     def get_yearly_reports(user: user_dependency, year: int):
         with SessionLocal() as db:
-          if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
-          
             
           start_date = datetime(year, 1, 1) 
           end_date = datetime(year + 1, 1, 1)  
@@ -196,12 +169,7 @@ class Expense(Base):
     
     @staticmethod
     def get_monthly_amount(user: user_dependency, month, year):
-        if user is None:
-            raise HTTPException(status_code=401, detail='Authentication failed')
-
-        if month is None or year is None:
-            raise HTTPException(status_code=400, detail="Month and year are required.")
-
+        
         start_date = datetime(year, month, 1)
         end_date = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
 
