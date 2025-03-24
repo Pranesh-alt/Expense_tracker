@@ -45,3 +45,8 @@ class ExpenseReport(BaseModel):
     category: str
     transaction: str
     time: datetime
+
+class ExpenseAmount(BaseModel):
+    month: int
+    year: int
+    total_expense: float

@@ -195,3 +195,8 @@ class Expense(Base):
                 Expense.user_id == user.get('id')  
             ).scalar() or 0  
     
+            return {
+            "month": month,
+            "year": year,
+            "total_expense": total
+        }

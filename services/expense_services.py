@@ -70,9 +70,24 @@ def get_yearly_reports(user:user_dependency,year: int):
 def get_expenses_by_category(user: user_dependency,category):
     expenses = Expense.get_expenses_by_category(user,category)
     
+    if expenses is None:
+        raise HTTPException(status_code=404, detail="Category not found")
+    
     return expenses
 
 def get_expenses_by_transaction(user: user_dependency,transaction):
     expenses = Expense.get_expenses_by_transaction(user,transaction)
     
+    if expenses is None:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    
     return expenses
+
+def get_monthly_amount(user:user_dependency,month,year):
+    report = Expense.get_monthly_amount(user,month,year)
+    
+    if report is None:
+        raise HTTPException(status_code=404, detail="Amount not found")
+    
+    return report
+
