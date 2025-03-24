@@ -162,6 +162,21 @@ def get_monthly_amount(user:user_dependency,month,year):
     
     return report
 
+def get_yearly_amount(user: user_dependency,year):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication failed")
+    
+    if year is None:
+        raise HTTPException(status_code=400, detail="Year is required.")
+    
+    amount = Expense.get_yearly_amount(user,year)
+    
+    if amount is None:
+        raise HTTPException(status_code=404, detail="Amount not found")
+    
+    return amount
+
+
 def get_daily_amount(user:user_dependency,year,month,date):
         if user is None:
             raise HTTPException(status_code=401, detail='Authentication failed')

@@ -45,8 +45,7 @@ class Expense(Base):
     @staticmethod
     def create_expense(user: user_dependency,expense_data):
         with SessionLocal() as db:
-         try:
-        
+         try:    
              last_expense = db.query(Expense).order_by(Expense.id.desc()).first()
              new_id = last_expense.id + 1 if last_expense else 1 
  
@@ -60,7 +59,6 @@ class Expense(Base):
              db.commit()
              db.refresh(expense)
              return expense
-        
         
          except Exception as e:
              db.rollback()
@@ -107,7 +105,6 @@ class Expense(Base):
             return db.query(Expense.category).all()
             
     
-    
     @staticmethod
     def get_monthly_reports(user: user_dependency, month, year):
         with SessionLocal() as db:
@@ -131,7 +128,6 @@ class Expense(Base):
         end_date = start_date + timedelta(days=1)  # Avoids manual date calculations
         with SessionLocal() as db:
            
-
            report = db.query(Expense).filter(
             Expense.time >= start_date,
             Expense.time < end_date
@@ -185,6 +181,26 @@ class Expense(Base):
             "year": year,
             "total_expense": total
         }
+    
+    
+    @staticmethod
+    def get_yearly_amount(user: user_dependency,year):
+        
+        start_date = datetime(year, 1, 1) 
+        end_date = datetime(year + 1, 1, 1)
+        
+        with SessionLocal() as db:
+            total = db.query(func.sum(Expense.amount)).filter(
+                Expense.time >= start_date,
+                Expense.time < end_date,
+                Expense.user_id == user.get('id')
+            ).scalar() or 0
+            
+            return{
+                "year": year,
+                "total_expense": total
+            }
+    
             
     @staticmethod
     def get_daily_amount(user: user_dependency,year,month, date):

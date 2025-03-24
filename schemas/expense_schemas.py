@@ -55,3 +55,7 @@ class DailyExpenseAmount(BaseModel):
     year: int
     date: int
     total_expense: float
+    
+class YearlyExpenseAmount(BaseModel):
+    year: int
+    total_expense: float
