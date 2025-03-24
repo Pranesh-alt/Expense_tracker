@@ -172,7 +172,6 @@ def get_daily_amount(user:user_dependency,year,month,date):
         if date is None:
             raise HTTPException(status_code=400, detail="Date is required.")
         
-    
         report = Expense.get_daily_amount(user,year,month,date)
     
         if report is None:
@@ -183,7 +182,15 @@ def get_daily_amount(user:user_dependency,year,month,date):
 def get_daily_reports(user:user_dependency, day,month,year):
     
     if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
+         raise HTTPException(status_code=401, detail='authentication failed')
+    
+    if year is None:
+        raise HTTPException(status_code=400, detail="Year is required.")
+    if month is None:
+        raise HTTPException(status_code=400, detail="Month is required.")
+    if day is None:
+        raise HTTPException(status_code=400, detail="Date is required.")
+    
     
     report = Expense.get_daily_reports(user,day,month,year)
     
