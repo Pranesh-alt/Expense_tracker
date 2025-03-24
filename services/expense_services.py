@@ -71,3 +71,8 @@ def get_expenses_by_category(user: user_dependency,category):
     expenses = Expense.get_expenses_by_category(user,category)
     
     return expenses
+
+def get_expenses_by_transaction(user: user_dependency,transaction):
+    expenses = Expense.get_expenses_by_transaction(user,transaction)
+    
+    return expenses

@@ -1,7 +1,8 @@
+from fastapi import Depends
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum
 from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session, joinedload
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List,Annotated
 import enum
 from sqlalchemy import Enum
 from database import Base, SessionLocal
@@ -31,7 +32,7 @@ class User(Base):
         with SessionLocal() as db:
            hashed_password = pwd_context.hash(user_credentials.password)
            db_user = User(id = db.query(User).count() + 1,
-                          username = user_credentials.username ,
+                          username = user_credentials.username,
                           password = hashed_password,
                           )
            db.add(db_user)

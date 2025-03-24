@@ -170,3 +170,8 @@ class Expense(Base):
             expenses = db.query(Expense).filter(Expense.category == category).all()
         return expenses if expenses else []
      
+    @staticmethod
+    def get_expenses_by_transaction(user: user_dependency,transaction: str):
+        with SessionLocal() as db:
+            expenses = db.query(Expense).filter(Expense.transaction == transaction).all()
+        return expenses if expenses else []
