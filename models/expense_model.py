@@ -142,7 +142,25 @@ class Expense(Base):
              ).filter(Expense.user_id == user.get('id')).all()
 
            return report        
+    
+    @staticmethod
+    def get_daily_reports(user: user_dependency,day, month, year):
+        if user is None:
+                 raise HTTPException(status_code=401, detail='authentication failed')
+            
+        start_date = datetime(year, month, day)
+        end_date = start_date + timedelta(days=1)  # Avoids manual date calculations
+        with SessionLocal() as db:
+           
+
+           report = db.query(Expense).filter(
+            Expense.time >= start_date,
+            Expense.time < end_date
+             ).filter(Expense.user_id == user.get('id')).all()
+
+           return  report or []        
        
+    
        
        
     @staticmethod
@@ -202,11 +220,6 @@ class Expense(Base):
             
     @staticmethod
     def get_daily_amount(user: user_dependency,year,month, date):
-        if user is None:
-            raise HTTPException(status_code=401, detail='Authentication failed')
-        
-        if date is None:
-            raise HTTPException(status_code=400, detail="Data is required.")
         
         start_date = datetime(year, month, date)
         if start_date.month == 12 and start_date.day == 31:

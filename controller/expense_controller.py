@@ -49,6 +49,12 @@ def get_yearly__reports(user:user_dependency,year:int):
     expense = expense_services.get_yearly_reports(user,year)
     return expense
 
+@router.get("/dailyreport/{year}/{month}/{day}", response_model=List[ExpenseReport], status_code=status.HTTP_200_OK)
+def get__daily__report(user:user_dependency,day: int,month:int,year: int):
+    amount = expense_services.get_daily_reports(user,day,month,year)
+    return amount
+    
+
 @router.get("/transactions/{transaction}", response_model=List[ExpenseResponse], status_code=status.HTTP_200_OK)
 def get__expenses__by__transaction(user: user_dependency,transaction: str):
     expense = expense_services.get_expenses_by_transaction(user,transaction)
@@ -64,8 +70,8 @@ def get__monthly__amount(user:user_dependency,month: int,year: int):
     amount = expense_services.get_monthly_amount(user,month,year)
     return amount
     
-@router.get("/dailyreport/{year}/{month}/{date}/amount", response_model=DailyExpenseAmount, status_code=status.HTTP_200_OK)
-def get__daily__amount(user:user_dependency,year: int,month:int,date: int):
-    amount = expense_services.get_daily_amount(user,year,month,date)
+@router.get("/dailyreport/{year}/{month}/{day}/amount", response_model=DailyExpenseAmount, status_code=status.HTTP_200_OK)
+def get__daily__amount(user:user_dependency,year: int,month:int,day: int):
+    amount = expense_services.get_daily_amount(user,year,month,day)
     return amount
     

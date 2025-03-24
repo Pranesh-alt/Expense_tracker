@@ -38,7 +38,6 @@ class ExpenseTransactionRespone(BaseModel):
     transaction: list[TransactionType]
 
 
-
 class ExpenseReport(BaseModel):
     id: int
     amount: float
