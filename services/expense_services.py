@@ -31,6 +31,9 @@ def get_expense_by_id(user: user_dependency,expense_id: int):
     if user is None:
         raise HTTPException(status_code=401, detail='authentication failed')
     
+    if expense_id is None:
+        raise HTTPException(status_code=400, detail="Expense ID is required.")
+    
     expense = Expense.get_expense_by_id(user,expense_id)
     
     if not expense:
@@ -44,6 +47,9 @@ def update_expense(user: user_dependency,expense_id:int,expense_data: ExpenseUpd
     if user is None:
         raise HTTPException(status_code=401, detail='authentication failed')
     
+    if expense_id is None:
+        raise HTTPException(status_code=400, detail="Expense ID is required.") 
+    
     expense = Expense.update_expense(user,expense_id,expense_data.model_dump())
     
     if not expense:
@@ -56,6 +62,10 @@ def delete_expense(user:user_dependency,expense_id: int):
     
     if user is None:
         raise HTTPException(status_code=401, detail='authentication failed')
+    
+    if expense_id is None:
+        raise HTTPException(status_code=400, detail="Expense ID is required.")
+    
     expense = Expense.delete_expense(user,expense_id)
     
     if not expense:
@@ -80,6 +90,9 @@ def get_monthly_reports(user:user_dependency,month,year):
     
     if user is None:
         raise HTTPException(status_code=401, detail='authentication failed')
+    
+    if month is None or year is None:
+        raise HTTPException(status_code=400, detail="Month and year are required.")
 
     
     report = Expense.get_monthly_reports(user,month,year)
@@ -107,7 +120,11 @@ def get_yearly_reports(user:user_dependency,year: int):
 def get_expenses_by_category(user: user_dependency,category):
     
     if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
+        raise HTTPException(status_code=401, detail='authentication failed')
+    
+    
+    if category is None:
+        raise HTTPException(status_code=400, detail="Category is requird.")
     
     expenses = Expense.get_expenses_by_category(user,category)
     
@@ -119,7 +136,10 @@ def get_expenses_by_category(user: user_dependency,category):
 def get_expenses_by_transaction(user: user_dependency,transaction):
     
     if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
+        raise HTTPException(status_code=401, detail='authentication failed')
+             
+    if transaction is None:
+        raise HTTPException(status_code=400, detail="Transaction is requird.")        
     
     expenses = Expense.get_expenses_by_transaction(user,transaction)
     
