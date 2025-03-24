@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum, func
 from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session, joinedload
-from datetime import datetime
+from datetime import datetime, timedelta, UTC
 from typing import Optional, List, Annotated
 from sqlalchemy import Enum
 from database import Base, SessionLocal
@@ -129,7 +129,6 @@ class Expense(Base):
         with SessionLocal() as db:
            if user is None:
                  raise HTTPException(status_code=401, detail='authentication failed')
-        
             
            start_date = datetime(year, month, 1)
            if month == 12:
@@ -200,3 +199,30 @@ class Expense(Base):
             "year": year,
             "total_expense": total
         }
+            
+    @staticmethod
+    def get_daily_amount(user: user_dependency,year,month, date):
+        if user is None:
+            raise HTTPException(status_code=401, detail='Authentication failed')
+        
+        if date is None:
+            raise HTTPException(status_code=400, detail="Data is required.")
+        
+        start_date = datetime(year, month, date)
+        if start_date.month == 12 and start_date.day == 31:
+            end_date = datetime(year+1, 1, 1)
+        else:
+            end_date = datetime(year, month, date + 1)
+        with SessionLocal() as db:
+            total = db.query(func.sum(Expense.amount)).filter(
+                Expense.time >= start_date,
+                Expense.time < end_date,
+                Expense.user_id == user.get('id')
+            ).scalar() or 0
+            
+            return{
+                "year": year,
+                "month": month,
+                "date": date,
+                "total_expense": total
+            }

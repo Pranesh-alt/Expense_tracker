@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas.expense_schemas import ExpenseCreate, ExpenseResponse, ExpenseUpdate,ExpenseCategoryResponse,ExpenseTransactionRespone,ExpenseReport,ExpenseAmount
+from schemas.expense_schemas import ExpenseCreate, ExpenseResponse, ExpenseUpdate,ExpenseCategoryResponse,ExpenseTransactionRespone,ExpenseReport,MonthlyExpenseAmount,DailyExpenseAmount
 from services import expense_services
 from models.expense_model import user_dependency
+from datetime import datetime
 from typing import List
 router = APIRouter()
 
@@ -58,8 +59,13 @@ def get__expenses_by_category(user: user_dependency,category: str):
     expense = expense_services.get_expenses_by_category(user,category)
     return expense
 
-@router.get("/monthlyreport/{year}/{month}/amount", response_model=ExpenseAmount, status_code=status.HTTP_200_OK)
+@router.get("/monthlyreport/{year}/{month}/amount", response_model=MonthlyExpenseAmount, status_code=status.HTTP_200_OK)
 def get__monthly__amount(user:user_dependency,month: int,year: int):
-    expense = expense_services.get_monthly_amount(user,month,year)
-    return expense
+    amount = expense_services.get_monthly_amount(user,month,year)
+    return amount
+    
+@router.get("/dailyreport/{year}/{month}/{date}/amount", response_model=DailyExpenseAmount, status_code=status.HTTP_200_OK)
+def get__daily__amount(user:user_dependency,year: int,month:int,date: int):
+    amount = expense_services.get_daily_amount(user,year,month,date)
+    return amount
     

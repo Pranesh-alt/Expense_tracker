@@ -91,3 +91,10 @@ def get_monthly_amount(user:user_dependency,month,year):
     
     return report
 
+def get_daily_amount(user:user_dependency,year,month,date):
+    report = Expense.get_daily_amount(user,year,month,date)
+    
+    if report is None:
+        raise HTTPException(status_code=404, detail="Amount not found")
+    
+    return report
