@@ -1,13 +1,13 @@
 from models.user_model import User
 from schemas.user_schemas import UserCreate, UserUpdate
 from fastapi import HTTPException
+from services.expense_services import user_dependency
 
+def create_user(user):
+    return User.create_user(user)
 
-def create_user(user_data: UserCreate):
-    return User.create_user(user_data)
-
-def get_users():
-    users = User.get_users()
+def get_users(user:user_dependency):
+    users = User.get_users(user)
     if not users:
         raise HTTPException(status_code=404, detail="Users not found")
     return users

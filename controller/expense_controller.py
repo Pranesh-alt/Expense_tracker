@@ -80,3 +80,9 @@ def get__daily__amount(user:user_dependency,year: int,month:int,day: int):
 def get_yearly__amount(user:user_dependency,year:int):
     expense = expense_services.get_yearly_amount(user,year)
     return expense
+
+
+@router.get("/dailyreport/{year}/{month}/{day}/amount", response_model=DailyExpenseAmount, status_code=status.HTTP_200_OK)
+def get__weekly__amount(user:user_dependency,year: int,month:int,day: int):
+    amount = expense_services.get_weekly_amount(user,year,month,day)
+    return amount

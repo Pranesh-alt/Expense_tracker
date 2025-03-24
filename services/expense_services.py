@@ -213,3 +213,19 @@ def get_daily_reports(user:user_dependency, day,month,year):
         raise HTTPException(status_code=404, detail="Report not found")
     
     return report
+
+
+def get_weekly_amount(user: user_dependency,year,month,date):
+    if user is None:
+         raise HTTPException(status_code=401, detail='authentication failed')
+    
+    if year is None:
+        raise HTTPException(status_code=400, detail="Year is required.")
+    if month is None:
+        raise HTTPException(status_code=400, detail="Month is required.")
+    if date is None:
+        raise HTTPException(status_code=400, detail="Date is required.")
+    
+    amount = Expense.get_weekly_amount(user,year,month,date)
+    
+    return amount

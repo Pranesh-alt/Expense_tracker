@@ -8,6 +8,7 @@ from sqlalchemy import Enum
 from database import Base, SessionLocal
 from passlib.context import CryptContext
 
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class User(Base):
@@ -24,9 +25,12 @@ class User(Base):
     # Data Access Object (DAO) Methods
     @staticmethod
     def create_user(user_credentials):
+        last_user = db.query(User).order_by(User.id.desc()).first()
+        new_id = last_user.id + 1 if last_user else 1 
+        
         with SessionLocal() as db:
            hashed_password = pwd_context.hash(user_credentials.password)
-           db_user = User(id = db.query(User).count() + 1,
+           db_user = User(id = new_id,
                           username = user_credentials.username,
                           password = hashed_password,
                           )

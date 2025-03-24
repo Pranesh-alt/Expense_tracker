@@ -203,13 +203,10 @@ class Expense(Base):
     
             
     @staticmethod
-    def get_daily_amount(user: user_dependency,year,month, date):
-        
+    def get_daily_amount(user: user_dependency, year: int, month: int, date: int):
         start_date = datetime(year, month, date)
-        if start_date.month == 12 and start_date.day == 31:
-            end_date = datetime(year+1, 1, 1)
-        else:
-            end_date = datetime(year, month, date + 1)
+        end_date = start_date + timedelta(days=1)  # Move to the next day
+        
         with SessionLocal() as db:
             total = db.query(func.sum(Expense.amount)).filter(
                 Expense.time >= start_date,
@@ -223,3 +220,26 @@ class Expense(Base):
                 "date": date,
                 "total_expense": total
             }
+            
+    @staticmethod
+    def get_weekly_amount(user: user_dependency, year, month, date):
+        current_date = datetime(year, month, date)
+
+        # Calculate the start of the current week (Monday as start)
+        start_of_week = current_date - timedelta(days=current_date.weekday())
+
+        with SessionLocal() as db:
+            total = db.query(func.sum(Expense.amount)).filter(
+                Expense.time >= start_of_week,
+                Expense.time <= current_date,
+                Expense.user_id == user.get('id')
+            ).scalar() or 0
+
+            return {
+                "year": year,
+                "month": month,
+                "date": date,
+                "total_expense": total
+            }
+        
+        
