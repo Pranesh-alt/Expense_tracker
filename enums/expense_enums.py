@@ -16,3 +16,4 @@ class TransactionType(str, enum.Enum):
     DEBIT = "DEBIT"
     CREDIT = "CREDIT"
 
+

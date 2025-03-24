@@ -8,12 +8,7 @@ from sqlalchemy import Enum
 from database import Base, SessionLocal
 from passlib.context import CryptContext
 
-
-
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
 
 class User(Base):
     __tablename__ = "users"

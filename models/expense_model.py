@@ -1,5 +1,5 @@
 from fastapi import Depends, HTTPException
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum, func
 from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session, joinedload
 from datetime import datetime
 from typing import Optional, List, Annotated
@@ -175,3 +175,23 @@ class Expense(Base):
         with SessionLocal() as db:
             expenses = db.query(Expense).filter(Expense.transaction == transaction).all()
         return expenses if expenses else []
+    
+    
+    @staticmethod
+    def get_monthly_amount(user: user_dependency, month, year):
+        if user is None:
+            raise HTTPException(status_code=401, detail='Authentication failed')
+
+        if month is None or year is None:
+            raise HTTPException(status_code=400, detail="Month and year are required.")
+
+        start_date = datetime(year, month, 1)
+        end_date = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
+
+        with SessionLocal() as db:
+            total = db.query(func.sum(Expense.amount)).filter(
+                Expense.time >= start_date,
+                Expense.time < end_date,
+                Expense.user_id == user.get('id')  
+            ).scalar() or 0  
+    
