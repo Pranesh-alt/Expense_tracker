@@ -164,6 +164,24 @@ class Expense(Base):
     
     
     @staticmethod
+    def get_weekly_report(user: user_dependency,date,month,year):
+        current_date = datetime(year, month, date)
+
+        # Calculate the start of the current week (Monday as start)
+        start_of_week = current_date - timedelta(days=current_date.weekday())
+
+        with SessionLocal() as db:
+            report = db.query(Expense).filter(
+                Expense.time >= start_of_week,
+                Expense.time <= current_date).filter(
+                Expense.user_id == user.get('id')
+            ).all()
+
+            return  report
+            
+    
+    
+    @staticmethod
     def get_monthly_amount(user: user_dependency, month, year):
         
         start_date = datetime(year, month, 1)
@@ -241,5 +259,6 @@ class Expense(Base):
                 "date": date,
                 "total_expense": total
             }
-        
-        
+    
+    
+    

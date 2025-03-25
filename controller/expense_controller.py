@@ -53,6 +53,11 @@ def get_yearly__reports(user:user_dependency,year:int):
 def get__daily__report(user:user_dependency,day: int,month:int,year: int):
     amount = expense_services.get_daily_reports(user,day,month,year)
     return amount
+
+@router.get("/weeklyreport/{year}/{month}/{day}", response_model=List[ExpenseReport], status_code=status.HTTP_200_OK)
+def get__weekly__report(user:user_dependency,day:int,month: int,year: int):
+    report = expense_services.get_weekly_reports(user,day,month,year)
+    return report
     
 
 @router.get("/transactions/{transaction}", response_model=List[ExpenseResponse], status_code=status.HTTP_200_OK)
@@ -69,6 +74,7 @@ def get__expenses_by_category(user: user_dependency,category: str):
 def get__monthly__amount(user:user_dependency,month: int,year: int):
     amount = expense_services.get_monthly_amount(user,month,year)
     return amount
+
     
 @router.get("/dailyreport/{year}/{month}/{day}/amount", response_model=DailyExpenseAmount, status_code=status.HTTP_200_OK)
 def get__daily__amount(user:user_dependency,year: int,month:int,day: int):
@@ -82,7 +88,8 @@ def get_yearly__amount(user:user_dependency,year:int):
     return expense
 
 
-@router.get("/dailyreport/{year}/{month}/{day}/amount", response_model=DailyExpenseAmount, status_code=status.HTTP_200_OK)
+@router.get("/weeklyreport/{year}/{month}/{day}/amount", response_model=DailyExpenseAmount, status_code=status.HTTP_200_OK)
 def get__weekly__amount(user:user_dependency,year: int,month:int,day: int):
     amount = expense_services.get_weekly_amount(user,year,month,day)
     return amount
+
