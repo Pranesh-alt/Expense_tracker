@@ -6,8 +6,8 @@ from services.expense_services import user_dependency
 def create_user(user):
     return User.create_user(user)
 
-def get_users(user:user_dependency):
-    users = User.get_users(user)
+def get_users():
+    users = User.get_users()
     if not users:
         raise HTTPException(status_code=404, detail="Users not found")
     return users

@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum, func
 from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session, joinedload
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, timedelta
 from typing import Optional, List, Annotated
 from sqlalchemy import Enum
 from database import Base, SessionLocal
@@ -95,7 +95,7 @@ class Expense(Base):
             db.delete(expense)
             db.commit()
             
-            return {"message" : "successfully Deleted"}
+            return expense
             
                           
     @staticmethod

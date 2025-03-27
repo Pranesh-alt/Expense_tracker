@@ -19,7 +19,7 @@ class User(Base):
     password: Mapped[str] = mapped_column(String)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    # Use a string reference to avoid circular import
+    
     expenses = relationship("Expense", back_populates="user")
     
     # Data Access Object (DAO) Methods
