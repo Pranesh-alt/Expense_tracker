@@ -78,6 +78,9 @@ class Expense(Base):
             if 'category' in expense_data:
                 expense.category = expense_data['category']
             
+            if 'transaction' in expense_data:
+                expense.transaction = expense_data['transaction']
+                
             db.commit()
             db.refresh(expense)
             
