@@ -31,13 +31,15 @@ def update__expense(user: user_dependency,expense_id:int,expense_data: ExpenseUp
 def delete__expense(user:user_dependency,expense_id: int):
     return expense_services.delete_expense(user,expense_id)
 
-@router.get("/categories", response_model=ExpenseCategoryResponse, status_code=status.HTTP_200_OK)
+@router.get("/categories/", response_model=ExpenseCategoryResponse, status_code=status.HTTP_200_OK)
 def expenses__categories(user:user_dependency):
-    return expense_services.expense_categories(user)
+    categories =  expense_services.expense_categories(user)
+    return categories
     
-@router.get("/transaction", response_model=ExpenseTransactionRespone, status_code=status.HTTP_200_OK)
+@router.get("/transactions/", response_model=ExpenseTransactionRespone, status_code=status.HTTP_200_OK)
 def expenses_transaction_types(user:user_dependency):
-    return expense_services.expense_transaction_types(user)    
+    transactions = expense_services.expense_transaction_types(user)
+    return transactions    
 
 @router.get("/monthlyreport/{year}/{month}",response_model=List[ExpenseReport], status_code=status.HTTP_200_OK)
 def get_monthly__reports(user:user_dependency,month: int,year: int):
