@@ -1,8 +1,6 @@
 from fastapi import APIRouter, status
 from services.user_services import update_user, get_user, get_users, delete_user, create_user
-from schemas.user_schemas import UserCreate, UserUpdate, UserResponse
-from schemas.expense_schemas import ExpenseResponse
-from services.expense_services import user_dependency
+from schemas.user_schemas import UserResponse
 router = APIRouter()
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
@@ -18,8 +16,8 @@ def get__user(user_id: int):
     return get_user(user_id)
 
 @router.put("/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK)
-def update__user(user_id:int,user_data: UserUpdate):
-    return update_user(user_id, user_data)
+def update__user(user_data:dict,user_id:int):
+    return update_user(user_data,user_id)
 
 @router.delete("/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK)
 def delete__user(user_id: int):

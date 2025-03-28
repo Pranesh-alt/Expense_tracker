@@ -1,6 +1,6 @@
 from models.user_model import User
 from schemas.user_schemas import UserCreate, UserUpdate
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from services.expense_services import user_dependency
 
 def create_user(user):
@@ -18,8 +18,8 @@ def get_user(user_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-def update_user(user_id: int , user_data: UserUpdate):
-    user = User.update_user(user_id,user_data.model_dump())
+def update_user(user_data, user_id: int = Depends(user_dependency)):
+    user = User.update_user(user_data.model_dump(),user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user

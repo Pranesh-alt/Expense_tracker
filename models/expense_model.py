@@ -5,13 +5,11 @@ from datetime import datetime, timedelta
 from typing import Optional, List, Annotated
 from sqlalchemy import Enum
 from database import Base, SessionLocal
-from passlib.context import CryptContext
 from enums.expense_enums import ExpenseCategory,TransactionType
-from auth import get_current_user
+from auth import user_dependency
 
 
 
-user_dependency = Annotated[dict, Depends(get_current_user)]
         
 class Expense(Base):
     __tablename__ = "expenses"
@@ -22,10 +20,6 @@ class Expense(Base):
     transaction: Mapped[TransactionType] = mapped_column(Enum(TransactionType), default=TransactionType.CREDIT, nullable=False)
     time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    
-    
-    # Use a string reference instead of direct import
-    user = relationship("User", back_populates="expenses")
     
     @staticmethod
     def get_expenses(user:user_dependency):
@@ -128,7 +122,7 @@ class Expense(Base):
     def get_daily_reports(user: user_dependency,day, month, year):
                    
         start_date = datetime(year, month, day)
-        end_date = start_date + timedelta(days=1)  # Avoids manual date calculations
+        end_date = start_date + timedelta(days=1)  
         with SessionLocal() as db:
            
            report = db.query(Expense).filter(
@@ -226,7 +220,7 @@ class Expense(Base):
     @staticmethod
     def get_daily_amount(user: user_dependency, year: int, month: int, date: int):
         start_date = datetime(year, month, date)
-        end_date = start_date + timedelta(days=1)  # Move to the next day
+        end_date = start_date + timedelta(days=1)  
         
         with SessionLocal() as db:
             total = db.query(func.sum(Expense.amount)).filter(
@@ -246,7 +240,6 @@ class Expense(Base):
     def get_weekly_amount(user: user_dependency, year, month, date):
         current_date = datetime(year, month, date)
 
-        # Calculate the start of the current week (Monday as start)
         start_of_week = current_date - timedelta(days=current_date.weekday())
 
         with SessionLocal() as db:
@@ -262,6 +255,3 @@ class Expense(Base):
                 "date": date,
                 "total_expense": total
             }
-    
-    
-    

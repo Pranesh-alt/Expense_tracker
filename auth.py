@@ -1,17 +1,19 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request
+from fastapi import APIRouter, Depends, status, HTTPException
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from typing import Annotated
 from passlib.context import CryptContext
-from models.user_model import User, pwd_context
+from models.user_model import User
 from schemas.user_schemas import Token
-from database import SessionLocal
+
 router = APIRouter()
 
 
 SECRET_KEY = 'ocewmpowmpomv'
 ALGORITHM = 'HS256'
+
+
 
 
 
@@ -26,7 +28,7 @@ def create_access_token(username: str, user_id: int, expires_delta: timedelta):
         
         
         
-async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
+def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get('sub', '')
@@ -41,6 +43,8 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate token')
 
 
+user_dependency = Annotated[dict, Depends(get_current_user)]
+
 @router.post("/token", response_model=Token)
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,Depends()]):
     
@@ -52,3 +56,6 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     token = create_access_token(user.username, user.id, timedelta(minutes=100))
     
     return  {'access_token':token, 'token_type':'bearer'}
+
+
+

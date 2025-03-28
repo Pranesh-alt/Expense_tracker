@@ -1,12 +1,8 @@
-from fastapi import Depends
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum
-from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session, joinedload
-from datetime import datetime
-from typing import Optional, List,Annotated
-import enum
-from sqlalchemy import Enum
+from sqlalchemy import Column, Integer, String,Boolean
+from sqlalchemy.orm import Mapped, mapped_column
 from database import Base, SessionLocal
 from passlib.context import CryptContext
+
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -20,15 +16,15 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     
-    expenses = relationship("Expense", back_populates="user")
     
     # Data Access Object (DAO) Methods
     @staticmethod
     def create_user(user_credentials):
-        last_user = db.query(User).order_by(User.id.desc()).first()
-        new_id = last_user.id + 1 if last_user else 1 
         
         with SessionLocal() as db:
+           last_user = db.query(User).order_by(User.id.desc()).first()
+           new_id = last_user.id + 1 if last_user else 1 
+            
            hashed_password = pwd_context.hash(user_credentials.password)
            db_user = User(id = new_id,
                           username = user_credentials.username,
@@ -50,7 +46,7 @@ class User(Base):
            return db.query(User).filter(User.id == user_id).first()
 
     @staticmethod
-    def update_user(user_id: int, user_credentials: dict):
+    def update_user(user_credentials: dict,user_id: int):
         with SessionLocal() as db:
          user = db.query(User).filter(User.id == user_id).first()
          if not user:
@@ -76,6 +72,8 @@ class User(Base):
 
          db.delete(user)
          db.commit()
+         
+         return user
     
     
     @staticmethod
