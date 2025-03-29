@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from models.expense_model import Expense,ExpenseCategory, TransactionType, user_dependency
 from schemas.expense_schemas import ExpenseCreate, ExpenseUpdate
-from services.expense_services import user_dependency
+from services.expense_services import user_dependency  # noqa: F811
 
 # Create Expense
 def create_expense(user: user_dependency,expense_data: ExpenseCreate):

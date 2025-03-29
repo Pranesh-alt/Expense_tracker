@@ -1,9 +1,6 @@
-from fastapi import Depends, HTTPException
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime,Boolean, Enum, func
-from sqlalchemy.orm import session, relationship, Mapped, mapped_column, Session, joinedload
+from sqlalchemy import Integer, Float, ForeignKey, DateTime, Enum, func
+from sqlalchemy.orm import   Mapped, mapped_column
 from datetime import datetime, timedelta
-from typing import Optional, List, Annotated
-from sqlalchemy import Enum
 from database import Base, SessionLocal
 from enums.expense_enums import ExpenseCategory,TransactionType
 from auth import user_dependency

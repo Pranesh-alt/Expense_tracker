@@ -1,5 +1,4 @@
 from models.user_model import User
-from schemas.user_schemas import UserCreate, UserUpdate
 from fastapi import HTTPException, Depends
 from services.expense_services import user_dependency
 
