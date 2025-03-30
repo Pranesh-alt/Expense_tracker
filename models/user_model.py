@@ -62,18 +62,6 @@ class User(Base):
         
          return user
 
-    @staticmethod
-    def update_partial_user(user_id: int, user_update: UserUpdate):
-        with SessionLocal() as db:
-            
-         user = db.query(User).filter(User.id == user_id).first()   
-            
-        for key, value in user_update.model_dump(exclude_unset=True).items():
-          setattr(user, key, value)
-
-          db.commit()
-          db.refresh(user)
-          return {"message": "User updated successfully", "user": user}
     
     @staticmethod
     def delete_user(user_id: int):
