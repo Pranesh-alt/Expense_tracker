@@ -1,5 +1,5 @@
 from models.user_model import User
-from fastapi import HTTPException, Depends
+from fastapi import Depends
 from services.expense_services import user_dependency
 from Validators.user_validators import validate_user
 
@@ -26,7 +26,8 @@ def delete_user(user_id: int):
     deleted = User.delete_user(user_id)
 
     validate_user(deleted)
-    return {"message": "User deleted successfully"}
+    
+    return {"message": f"{deleted.username} deleted successfully"}
 
 
 

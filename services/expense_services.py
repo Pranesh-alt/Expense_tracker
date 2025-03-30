@@ -2,13 +2,12 @@ from fastapi import HTTPException
 from models.expense_model import Expense,ExpenseCategory, TransactionType, user_dependency
 from schemas.expense_schemas import ExpenseCreate, ExpenseUpdate
 from services.expense_services import user_dependency  # noqa: F811
-from Validators.expense_validators import date_month_year, month_year
+from Validators.expense_validators import date_month_year_validator, month_year_validator,year_validator,user_validator
 
 # Create Expense
 def create_expense(user: user_dependency,expense_data: ExpenseCreate):
     
-    if user is None:
-         raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
     expense = Expense.create_expense(user,expense_data)
     
@@ -21,8 +20,7 @@ def create_expense(user: user_dependency,expense_data: ExpenseCreate):
 # Get all Expenses
 def get_all_expenses(user:user_dependency):
     
-    if user is None:
-        raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
     expenses = Expense.get_expenses(user)
     
@@ -30,8 +28,7 @@ def get_all_expenses(user:user_dependency):
     
 def get_expense_by_id(user: user_dependency,expense_id: int):
     
-    if user is None:
-        raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
     if expense_id is None:
         raise HTTPException(status_code=400, detail="Expense ID is required.")
@@ -46,8 +43,7 @@ def get_expense_by_id(user: user_dependency,expense_id: int):
         
 def update_expense(user: user_dependency,expense_id:int,expense_data: ExpenseUpdate):
     
-    if user is None:
-        raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
     if expense_id is None:
         raise HTTPException(status_code=400, detail="Expense ID is required.") 
@@ -61,9 +57,7 @@ def update_expense(user: user_dependency,expense_id:int,expense_data: ExpenseUpd
 
 
 def delete_expense(user:user_dependency,expense_id: int):
-    
-    if user is None:
-        raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
     if expense_id is None:
         raise HTTPException(status_code=400, detail="Expense ID is required.")
@@ -77,23 +71,21 @@ def delete_expense(user:user_dependency,expense_id: int):
 
 def expense_categories(user:user_dependency):
     
-    if user is None:
-        raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
     return {"categories": list(ExpenseCategory)}
 
 def expense_transaction_types(user:user_dependency):
-    if user is None:
-        raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
+    
     return {"transaction": list(TransactionType)}
 
 
 def get_monthly_reports(user:user_dependency,month,year):
     
-    if user is None:
-        raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
-    month_year(month,year)
+    month_year_validator(month,year)
     
     report = Expense.get_monthly_reports(user,month,year)
     
@@ -102,13 +94,11 @@ def get_monthly_reports(user:user_dependency,month,year):
     
     return report
 
-def get_yearly_reports(user:user_dependency,year: int):
+def get_yearly_reports(user:user_dependency,year):
     
-    if user is None:
-         raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
-    if year is None:
-        raise HTTPException(status_code=400, detail="Year is required.")
+    year_validator(year)
     
     report = Expense.get_yearly_reports(user,year)
     
@@ -119,8 +109,7 @@ def get_yearly_reports(user:user_dependency,year: int):
 
 def get_expenses_by_category(user: user_dependency,category):
     
-    if user is None:
-        raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
         
     if category is None:
         raise HTTPException(status_code=400, detail="Category is requird.")
@@ -134,8 +123,7 @@ def get_expenses_by_category(user: user_dependency,category):
 
 def get_expenses_by_transaction(user: user_dependency,transaction):
     
-    if user is None:
-        raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
              
     if transaction is None:
         raise HTTPException(status_code=400, detail="Transaction is requird.")        
@@ -148,10 +136,9 @@ def get_expenses_by_transaction(user: user_dependency,transaction):
     return expenses
 
 def get_monthly_amount(user:user_dependency,month,year):
-    if user is None:
-            raise HTTPException(status_code=401, detail='Authentication failed')
+    user_validator(user)
      
-    month_year(month,year) 
+    month_year_validator(month,year) 
 
     report = Expense.get_monthly_amount(user,month,year)
     
@@ -161,11 +148,9 @@ def get_monthly_amount(user:user_dependency,month,year):
     return report
 
 def get_yearly_amount(user: user_dependency,year):
-    if user is None:
-        raise HTTPException(status_code=401, detail="Authentication failed")
+    user_validator(user)
     
-    if year is None:
-        raise HTTPException(status_code=400, detail="Year is required.")
+    year_validator(year)
     
     amount = Expense.get_yearly_amount(user,year)
     
@@ -176,10 +161,9 @@ def get_yearly_amount(user: user_dependency,year):
 
 
 def get_daily_amount(user:user_dependency,year,month,date):
-        if user is None:
-            raise HTTPException(status_code=401, detail='Authentication failed')
+        user_validator(user)
         
-        date_month_year(date,month,year)
+        date_month_year_validator(date,month,year)
         
         report = Expense.get_daily_amount(user,year,month,date)
     
@@ -190,10 +174,9 @@ def get_daily_amount(user:user_dependency,year,month,date):
 
 def get_daily_reports(user:user_dependency, day,month,year):
     
-    if user is None:
-         raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
-    date_month_year(day,month,year)
+    date_month_year_validator(day,month,year)
     
     report = Expense.get_daily_reports(user,day,month,year)
     
@@ -204,11 +187,9 @@ def get_daily_reports(user:user_dependency, day,month,year):
 
 def get_weekly_reports(user:user_dependency, day,month,year):
     
-    if user is None:
-         raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
     
-    date_month_year(day,month,year)
-    
+    date_month_year_validator(day,month,year)
     
     report = Expense.get_weekly_report(user,day,month,year)
     
@@ -219,10 +200,9 @@ def get_weekly_reports(user:user_dependency, day,month,year):
 
 
 def get_weekly_amount(user: user_dependency,year,month,date):
-    if user is None:
-         raise HTTPException(status_code=401, detail='authentication failed')
+    user_validator(user)
      
-    date_month_year(date,month,year)
+    date_month_year_validator(date,month,year)
     
     amount = Expense.get_weekly_amount(user,year,month,date)
     
