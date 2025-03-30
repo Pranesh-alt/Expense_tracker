@@ -2,13 +2,13 @@ from fastapi import HTTPException
 from models.expense_model import Expense,ExpenseCategory, TransactionType, user_dependency
 from schemas.expense_schemas import ExpenseCreate, ExpenseUpdate
 from services.expense_services import user_dependency  # noqa: F811
-from Validators.expense_validators import date_month_year
+from Validators.expense_validators import date_month_year, month_year
 
 # Create Expense
 def create_expense(user: user_dependency,expense_data: ExpenseCreate):
     
     if user is None:
-                 raise HTTPException(status_code=401, detail='authentication failed')
+         raise HTTPException(status_code=401, detail='authentication failed')
     
     expense = Expense.create_expense(user,expense_data)
     
@@ -93,9 +93,7 @@ def get_monthly_reports(user:user_dependency,month,year):
     if user is None:
         raise HTTPException(status_code=401, detail='authentication failed')
     
-    if month is None or year is None:
-        raise HTTPException(status_code=400, detail="Month and year are required.")
-
+    month_year(month,year)
     
     report = Expense.get_monthly_reports(user,month,year)
     
@@ -123,8 +121,7 @@ def get_expenses_by_category(user: user_dependency,category):
     
     if user is None:
         raise HTTPException(status_code=401, detail='authentication failed')
-    
-    
+        
     if category is None:
         raise HTTPException(status_code=400, detail="Category is requird.")
     
@@ -153,9 +150,8 @@ def get_expenses_by_transaction(user: user_dependency,transaction):
 def get_monthly_amount(user:user_dependency,month,year):
     if user is None:
             raise HTTPException(status_code=401, detail='Authentication failed')
-
-    if month is None or year is None:
-            raise HTTPException(status_code=400, detail="Month and year are required.")
+     
+    month_year(month,year) 
 
     report = Expense.get_monthly_amount(user,month,year)
     
@@ -220,7 +216,6 @@ def get_weekly_reports(user:user_dependency, day,month,year):
         raise HTTPException(status_code=404, detail="Report not found")
     
     return report
-
 
 
 def get_weekly_amount(user: user_dependency,year,month,date):
