@@ -25,6 +25,10 @@ def update_user(user_data, user_id: int = Depends(user_dependency)):
     validate_user(user)
     return user
 
+def update_partial_user(user_id,user_data):
+    user = User.update_partial_user(user_id,user_data)  
+    
+    return {"message": f"{user} deleted successfully"}
 
 def delete_user(user_id: int):
     deleted = User.delete_user(user_id)
