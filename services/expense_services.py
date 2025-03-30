@@ -11,9 +11,6 @@ def create_expense(user: user_dependency,expense_data: ExpenseCreate):
     
     expense = Expense.create_expense(user,expense_data)
     
-    if not expense:
-        raise HTTPException(status_code=404, detail="Expense not found")
-    
     return expense
        
     
@@ -161,16 +158,16 @@ def get_yearly_amount(user: user_dependency,year):
 
 
 def get_daily_amount(user:user_dependency,year,month,date):
-        user_validator(user)
+    user_validator(user)
         
-        date_month_year_validator(date,month,year)
+    date_month_year_validator(date,month,year)
         
-        report = Expense.get_daily_amount(user,year,month,date)
+    report = Expense.get_daily_amount(user,year,month,date)
     
-        if report is None:
-          raise HTTPException(status_code=404, detail="Amount not found")
+    if report is None:
+        raise HTTPException(status_code=404, detail="Amount not found")
     
-        return report
+    return report
 
 def get_daily_reports(user:user_dependency, day,month,year):
     

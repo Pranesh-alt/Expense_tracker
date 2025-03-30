@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String,Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from database import Base, SessionLocal
 from passlib.context import CryptContext
-
+from schemas.user_schemas import UserUpdate
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -46,7 +46,7 @@ class User(Base):
            return db.query(User).filter(User.id == user_id).first()
 
     @staticmethod
-    def update_user(user_credentials: dict,user_id: int):
+    def update_user(user_credentials,user_id: int):
         with SessionLocal() as db:
          user = db.query(User).filter(User.id == user_id).first()
          if not user:

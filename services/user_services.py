@@ -2,9 +2,12 @@ from models.user_model import User
 from fastapi import Depends
 from services.expense_services import user_dependency
 from Validators.user_validators import validate_user
+from schemas.user_schemas import UserUpdate,UserCreate
 
-def create_user(user):
-    return User.create_user(user)
+def create_user(user_data: UserCreate):
+    user = User.create_user(user_data)
+    
+    return user
 
 def get_users():
     users = User.get_users()

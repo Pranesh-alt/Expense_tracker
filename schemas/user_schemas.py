@@ -18,6 +18,9 @@ class UserResponse(BaseModel):
     class Config:
         orm_mode = True
 
+class DeleteResponse(BaseModel):
+    message: str
+
 class Token(BaseModel):
     access_token: str
     token_type: str
