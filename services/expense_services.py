@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from models.expense_model import Expense,ExpenseCategory, TransactionType, user_dependency
 from schemas.expense_schemas import ExpenseCreate, ExpenseUpdate
 from services.expense_services import user_dependency  # noqa: F811
-from Validators.expense_validators import date_month_year_validator, month_year_validator,year_validator,user_validator
+from Validators.expense_validators import date_month_year_validator, month_year_validator,year_validator,user_validator,expense_id_validator
 
 # Create Expense
 def create_expense(user: user_dependency,expense_data: ExpenseCreate):
@@ -10,9 +10,6 @@ def create_expense(user: user_dependency,expense_data: ExpenseCreate):
     user_validator(user)
     
     expense = Expense.create_expense(user,expense_data)
-    
-    if not expense:
-        raise HTTPException(status_code=404, detail="Expense not found")
     
     return expense
        
@@ -26,13 +23,13 @@ def get_all_expenses(user:user_dependency):
     
     return expenses if expenses else []  
     
+    
 def get_expense_by_id(user: user_dependency,expense_id: int):
     
     user_validator(user)
     
-    if expense_id is None:
-        raise HTTPException(status_code=400, detail="Expense ID is required.")
-    
+    expense_id_validator(expense_id)
+        
     expense = Expense.get_expense_by_id(user,expense_id)
     
     if not expense:
@@ -45,8 +42,7 @@ def update_expense(user: user_dependency,expense_id:int,expense_data: ExpenseUpd
     
     user_validator(user)
     
-    if expense_id is None:
-        raise HTTPException(status_code=400, detail="Expense ID is required.") 
+    expense_id_validator(expense_id)
     
     expense = Expense.update_expense(user,expense_id,expense_data.model_dump())
     
@@ -59,8 +55,7 @@ def update_expense(user: user_dependency,expense_id:int,expense_data: ExpenseUpd
 def delete_expense(user:user_dependency,expense_id: int):
     user_validator(user)
     
-    if expense_id is None:
-        raise HTTPException(status_code=400, detail="Expense ID is required.")
+    expense_id_validator(expense_id)
     
     expense = Expense.delete_expense(user,expense_id)
     
