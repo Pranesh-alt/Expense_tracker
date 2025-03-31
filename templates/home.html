@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href={{url_for('static', path='/css/base.css')}}>
+    <script src={{ url_for('static', path='/js/script.js')}}></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Expense Tracker</h1>
+    </header>
+    
+    <main>
+        <section class="dashboard">
+            <h2>Dashboard</h2>
+            <div class="summary">
+                <p>Total Expenses: <span id="total-expense">$0.00</span></p>
+                <button onclick="addExpense()">Add Expense</button>
+            </div>
+            <form id="expense-form">
+                <label for="category">Category:</label>
+                <select id="category" name="category">
+                    <option value="food">Food</option>
+                    <option value="transport">Transport</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="other">Other</option>
+                </select>
+                
+                <label for="transaction-type">Transaction Type:</label>
+                <select id="transaction-type" name="transaction-type">
+                    <option value="income">Credit</option>
+                    <option value="expense">Debit</option>
+                </select>
+            </form>
+            <ul id="expense-list"></ul>
+        </section>
+    </main>
+    
+    <script src="script.js"></script>
+</body>
+</html>

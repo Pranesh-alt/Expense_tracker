@@ -1,17 +1,26 @@
-from fastapi import FastAPI 
+from fastapi import FastAPI , Request
 from controller import user_controller, expense_controller
 from database import engine, Base
 import auth
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+import os
+
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
 # FastAPI instance
 app = FastAPI()
 
+# Set the correct template directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 @app.get("/")
-def read_root():
-    return {"message": "Welcome to Expense Tracker"}
+def read_root(request: Request):
+    return templates.TemplateResponse("home.html", {"request": request})
 
 
 
