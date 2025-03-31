@@ -3,10 +3,10 @@
 <head>
     <link rel="stylesheet" type="text/css" href={{url_for('static', path='/css/base.css')}}>
     <script src={{ url_for('static', path='/js/script.js')}}></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
@@ -32,14 +32,18 @@
                 
                 <label for="transaction-type">Transaction Type:</label>
                 <select id="transaction-type" name="transaction-type">
-                    <option value="income">Credit</option>
-                    <option value="expense">Debit</option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
                 </select>
             </form>
             <ul id="expense-list"></ul>
         </section>
+
+        <section class="chart-container">
+            <h2>Expense Analysis</h2>
+            <canvas id="expenseChart"></canvas>
+        </section>
     </main>
     
-    <script src="script.js"></script>
 </body>
 </html>
