@@ -1,4 +1,4 @@
-from pydantic import BaseModel,Field,  ConfigDict
+from pydantic import BaseModel,Field
 from typing import Optional
 from datetime import datetime
 from models.expense_model import TransactionType, ExpenseCategory
@@ -21,8 +21,6 @@ class ExpenseResponse(BaseModel):
     user_id: int
     
     
-    class Config:
-        model_config = ConfigDict(from_attributes=True)
     
 class ExpenseUpdate(BaseModel):
     amount: Optional[float] = Field(None, gt=0) 

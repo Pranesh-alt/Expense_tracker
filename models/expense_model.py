@@ -6,8 +6,6 @@ from enums.expense_enums import ExpenseCategory,TransactionType
 from auth import user_dependency
 
 
-
-        
 class Expense(Base):
     __tablename__ = "expenses"
 
@@ -23,7 +21,6 @@ class Expense(Base):
         with SessionLocal() as db:
             
             return db.query(Expense).filter(Expense.user_id == user.get('id')).all()
-    
     
     @staticmethod
     def get_expense_by_id(user: user_dependency,expense_id: int):
@@ -161,7 +158,7 @@ class Expense(Base):
     def get_weekly_report(user: user_dependency,date,month,year):
         current_date = datetime(year, month, date)
 
-        # Calculate the start of the current week (Monday as start)
+    
         start_of_week = current_date - timedelta(days=current_date.weekday())
 
         with SessionLocal() as db:
