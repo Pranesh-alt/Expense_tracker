@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href={{url_for('static', path='/css/base.css')}}>
-    <script src={{ url_for('static', path='/js/script.js')}}></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src={{ url_for('static', path='/js/script.js')}}></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
@@ -38,6 +38,15 @@
             </form>
             <ul id="expense-list"></ul>
         </section>
+        <section class="dashboard">
+            <!-- ...existing content... -->
+            <ul id="expense-list"></ul>
+        
+            <!-- Add this canvas -->
+            <canvas id="expenseChart"></canvas>
+        </section>
+        
+
 
     </main>
     

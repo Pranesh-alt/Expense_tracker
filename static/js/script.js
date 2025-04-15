@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const newExpense = { amount, category, transaction };
         
         try {
-            await fetch("/", {
+            await fetch("http://127.0.0.1:8001/expenses", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newExpense)

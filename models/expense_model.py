@@ -20,7 +20,7 @@ class Expense(Base):
     def get_expenses(user:user_dependency):
         with SessionLocal() as db:
             
-            return db.query(Expense).filter(Expense.user_id == user.get('id')).all()
+            return db.query(Expense).filter(Expense.user_id == user.get('id')).all() 
     
     @staticmethod
     def get_expense_by_id(user: user_dependency,expense_id: int):
